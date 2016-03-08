@@ -1,0 +1,111 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"id": "http://ctrlaltbksp.eu/questionnaire/schema-01.json#",
+	"definitions": {
+		"positiveInteger": {
+			"type": "integer",
+			"minimum": 0
+		},
+		"notEmptyString": {
+			"type": "string",
+			"minLength": 1
+		},
+		"question": {
+			"type": "object",
+			"allOf": [{
+				"properties": {
+					"text": {
+						"$ref": "#/definitions/notEmptyString"
+					},
+					"points": {
+						"$ref": "#/definitions/positiveInteger"
+					},
+					"explaination": {
+						"$ref": "#/definitions/notEmptyString"
+					}
+				}
+			}, {
+				"oneOf": [{
+					"required": ["type", "options", "solution"],
+					"properties": {
+						"type": {
+							"enum": ["single-choice"]
+						},
+						"options": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/notEmptyString"
+							},
+							"minItems": 1
+						},
+						"solution": {
+							"$ref": "#/definitions/positiveInteger"
+						}
+					}
+				}, {
+					"required": ["type", "options", "solution"],
+					"properties": {
+						"type": {
+							"enum": ["multiple-choices"]
+						},
+						"options": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/notEmptyString"
+							},
+							"minItems": 1
+						},
+						"solution": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/positiveInteger"
+							},
+							"minItems": 1
+						}
+					}
+				}, {
+					"required": ["type", "options", "solution"],
+					"properties": {
+						"type": {
+							"enum": ["completable-text"]
+						},
+						"options": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/notEmptyString"
+							},
+							"minItems": 1
+						},
+						"solution": {
+							"type": "object",
+							"minProperties": 1,
+							"additionalProperties": {
+								"oneOf": [{
+									"$ref": "#/definitions/positiveInteger"
+								}, {
+									"type": "null"
+								}]
+							}
+						}
+					}
+				}]
+			}],
+			"additionalProperties": true,
+			"required": [
+				"text"
+			]
+		}
+	},
+	"type": "object",
+	"properties": {
+		"questions": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/question"
+			}
+		}
+	},
+	"required": [
+		"questions"
+	]
+}

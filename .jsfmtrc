@@ -1,0 +1,19 @@
+{
+  "preset": "default",
+  "extensions": ["js", "jsx"],
+  "plugins": [
+      "esformatter-jsx",
+      "esformatter-quotes",
+      "esformatter-eol-last"
+  ],
+  "jsx": {
+    "attrsOnSameLineAsTag": false,
+    "maxAttrsOnTag": 1,
+    "firstAttributeOnSameLine": true,
+    "alignWithFirstAttribute": true
+  },
+  "quotes": {
+    "type": "single",
+    "avoidEscape": true
+  }
+}

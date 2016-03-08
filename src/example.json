@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "title": "Example exercise"
+  },
+  "questions": [
+    {
+      "type": "single-choice",
+      "text": "Question with a single answer",
+      "options": [
+        "Incorrect answer",
+        "Correct answer"
+      ],
+      "solution": 1
+    },
+    {
+      "type": "multiple-choices",
+      "text": "Question with a multiple answers",
+      "options": [
+        "Incorrect answer A",
+        "Correct answer 1",
+        "Incorrect answer B",
+        "Correct answer 2",
+        "Incorrect answer C"
+      ],
+      "solution": [1, 3]
+    },
+    {
+      "type": "completable-text",
+      "text": "There is % missing % in this sentence.",
+      "options": [
+        "word", "some", "letter", "a"
+      ],
+      "solution": {
+        "0": 0,
+        "1": 3
+      }
+    }
+  ]
+}
