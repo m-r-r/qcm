@@ -13,6 +13,7 @@ window.addEventListener('load', () => {
       element.classList.remove('questionnaire');
       let uri = element.getAttribute('data-questionnaire-uri');
       let store = configureStore();
+      // store.subscribe((object) => console.debug('state', store.getState()));
       ReactDOM.render(
         <Provider store={ store }>
           <Client uri={ uri } />

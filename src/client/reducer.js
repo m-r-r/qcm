@@ -26,7 +26,7 @@ export default function reducer (state = INITIAL_STATE, action) {
     case actions.LOAD_EXERCISE:
       return {
         ...state,
-        state: steps.LOADING,
+        step: steps.LOADING,
         error: null,
       };
 
@@ -87,18 +87,18 @@ export default function reducer (state = INITIAL_STATE, action) {
         const {result} = payload;
         const {currentQuestion} = state;
         return {
-            ...state,
-            step: steps.SOLUTION,
-            userResults: {
-                ...state.userResults,
-                [currentQuestion]: result,
-            }
+          ...state,
+          step: steps.SOLUTION,
+          userResults: {
+            ...state.userResults,
+            [currentQuestion]: result ? 1 : 0,
+          },
         };
       }
 
     case actions.NEXT_QUESTION:
       {
-        const {questions, currentQuestion, userAnswers} = state;
+        const {questions, currentQuestion} = state;
         if (state.step !== steps.SOLUTION) {
           return state;
         }

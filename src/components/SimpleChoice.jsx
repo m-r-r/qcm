@@ -11,13 +11,11 @@ export default class SimpleChoice extends Component {
     onChange: PropTypes.func.isRequired,
   };
 
-  getDefaultProps () {
-    return {
-      disabled: false,
-      onChange: () => void 0,
-      value: null,
-    };
-  }
+  static defaultProps = {
+    disabled: false,
+    onChange: () => void 0,
+    value: null,
+  };
 
   componentWillMount () {
     this.radiosName = newId('simple-choice-form-');
@@ -35,9 +33,8 @@ export default class SimpleChoice extends Component {
             <li key={index} className='SingleChoice__choice'>
               <input type='radio' className='SingleChoice__checkbox'
                      name={this.radiosName} value={index} checked={value === index}
-                     disabled={disabled} onChange={this.handleCheckboxChange.bind(this, index)}>
-                {option}
-              </input>
+                     disabled={disabled} onChange={this.handleCheckboxChange.bind(this, index)} />
+              {option}
             </li>
           ))
         }

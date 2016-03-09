@@ -24,11 +24,11 @@ export function * watchLoadExercise () {
 
 export function * watchAnswerQuestion (getState) {
   while (true) {
-    let {payload: {id, answer}} = yield take(actions.ANSWER_QUESTION);
+    let {payload: {answer}} = yield take(actions.ANSWER_QUESTION);
 
     let state = getState();
-    let question = state.questions[id];
-    yield put(actions.answerChecked(id, validateAnswer(question, answer)));
+    let question = state.questions[state.currentQuestion];
+    yield put(actions.validateAnswer(validateAnswer(question, answer)));
   }
 }
 
