@@ -22,7 +22,7 @@ const config = {
   output: {
     path: BUILD_DIR,
     publicPath: '/',
-    filename: `[name].js`,
+    filename: '[name].js',
   },
 
   resolve: {

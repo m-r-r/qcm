@@ -55,6 +55,12 @@ class Client extends Component {
     }
   }
 
+  get currentAnswer () {
+    const {step, currentQuestion, userAnswers} = this.props;
+    const {answer} = this.state;
+    return step === steps.INPUT ? answer : userAnswers[currentQuestion];
+  }
+
   renderContent () {
     const {step, error, metadata, questions,  currentQuestion} = this.props;
 
@@ -73,7 +79,8 @@ class Client extends Component {
           </div>
         );
 
-      case steps.STARTED:
+      case steps.INPUT:
+      case steps.SOLUTION:
         const question = questions[currentQuestion];
         const {answer} = this.state;
 
@@ -82,15 +89,12 @@ class Client extends Component {
           {
             React.createElement(this.questionComponent, {
               ...question,
-              value: answer,
+              value: this.currentAnswer
               onChange: this.handleChangeAnswer,
+              disabled: step === steps.SOLUTION,
             })
           }
-          <button type="button" onClick={this.handleClickContinue}
-                  disabled={answer === null}>
-            Continuer
-          </button>
-
+          { this.renderSolution() }
           </div>
         );
 
@@ -102,10 +106,67 @@ class Client extends Component {
     }
   }
 
+  renderSolution () {
+    const {step, userResults, currentQuestion, question} = this.props;
+
+    if (step !== steps.SOLUTION) {
+      return false;
+    }
+
+    const {result} = userResults[currentQuestion];
+    if (result == 0) {
+      return (
+        <div className="Solution Solution--error">
+          Error !
+        </div>
+      );
+    } else {
+      return (
+        <div className="Solution Solution--success">
+          Success
+        </div>
+      );
+    }
+  }
+
+  renderButton () {
+    const {step} = this.props;
+
+    switch (step) {
+      case steps.READY:
+        return (
+          <button type="button" className="btn btn-primary"
+                  onClick={this.handleClickStart}>Commencer</button>
+        );
+      case steps.INPUT:
+        return (
+          <button type="button" className="btn btn-primary"
+                  onClick={this.handleSubmitAnswer}>Envoyer</button>
+        );
+      case steps.SOLUTION:
+        return (
+          <button type="button" className="btn btn-primary"
+                  onClick={this.handleSubmitAnswer}>Continuer</button>
+        );
+      case steps.FINISHED:
+        return (
+          <button type="button" className="btn btn-primary"
+                  onClick={this.handleClickStart}>Recommencer</button>
+        );
+      default:
+        return false;
+    }
+  }
+
   render () {
     return (
       <div className={this.className}>
-        {this.renderContent()}
+        <div className="QuestionnaireClient__Content">
+          {this.renderContent()}
+        </div>
+        <div className="QuestionnaireClient__Controls">
+          {this.renderButton()}
+        </div>
       </div>
     );
   }
@@ -118,9 +179,11 @@ class Client extends Component {
     this.setState({answer});
   }
 
-  handleSubmitAnswer(answer) {
-    const {answerQuestio, currentQuestion} = this.props;
-    answerQuestion(currentQuestion, answer);
+  handleSubmitAnswer() {
+    const {answer} = this.state;
+    if (answer !== null) {
+        this.props.answerQuestion(answer);
+    }
   }
 
   handleClickContinue() {

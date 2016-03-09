@@ -4,7 +4,8 @@ export const steps = {
   FAILURE: 'FAILURE',
   LOADING: 'LOADING',
   READY: 'READY',
-  STARTED: 'STARTED',
+  INPUT: 'INPUT',
+  SOLUTION: 'SOLUTION',
   FINISHED: 'FINISHED',
 };
 
@@ -15,7 +16,7 @@ export const INITIAL_STATE = {
   error: null,
   currentQuestion: null,
   userAnswers: {},
-  showSolution: false,
+  userResults: {},
 };
 
 export default function reducer (state = INITIAL_STATE, action) {
@@ -56,65 +57,63 @@ export default function reducer (state = INITIAL_STATE, action) {
       }
       return {
         ...state,
+        step: steps.INPUT,
         currentQuestion: 0,
         userAnswers: {},
-        showSolution: false,
-        step: steps.STARTED,
+        userResults: {},
       };
 
     case actions.ANSWER_QUESTION:
       {
-        let {id, answer} = payload;
-        if (state.step !== steps.STARTED) {
+        if (state.step !== steps.INPUT) {
           return state;
         }
+        const {answer} = payload;
+        const {currentQuestion} = state;
         return {
           ...state,
           userAnswers: {
             ...state.userAnswers,
-            [id]: answer,
+            [currentQuestion]: answer,
           },
         };
       }
 
-    case actions.ANSWER_CHECKED:
+    case actions.VALIDATE_ANSWER:
       {
-        let {result} = payload;
-        if (state.step !== steps.STARTED) {
+        if (state.step !== steps.INPUT) {
           return state;
         }
-        if (result === false) {
-          return {
+        const {result} = payload;
+        const {currentQuestion} = state;
+        return {
             ...state,
-            showSolution: true,
-          };
-        }
-        return state;
+            step: steps.SOLUTION,
+            userResults: {
+                ...state.userResults,
+                [currentQuestion]: result,
+            }
+        };
       }
 
-    case actions.CONTINUE:
+    case actions.NEXT_QUESTION:
       {
         const {questions, currentQuestion, userAnswers} = state;
-        if (state.step !== steps.STARTED) {
+        if (state.step !== steps.SOLUTION) {
           return state;
         }
-        if (!userAnswers.hasOwnProperty(currentQuestion)) {
-          return state;
-        }
-
         const isLastQuestion = state.currentQuestion === questions.length - 1;
 
         if (isLastQuestion) {
           return {
             ...state,
-            finished: true,
-            showSolution: false,
+            step: steps.FINISHED,
             currentQuestion: null,
           };
         } else {
           return {
             ...state,
-            showSolution: false,
+            step: steps.INPUT,
             currentQuestion: currentQuestion + 1,
           };
         }

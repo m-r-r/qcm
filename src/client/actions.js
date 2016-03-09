@@ -3,6 +3,7 @@ export const LOAD_EXERCISE_SUCCESS = 'LOAD_EXERCISE_SUCCESS';
 export const LOAD_EXERCISE_FAILURE = 'LOAD_EXERCISE_FAILURE';
 export const START_EXERCISE = 'START_EXERCISE';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
+export const VALIDATE_ANSWER = 'VALIDATE_ANSWER';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 
 export const loadExercise = (uri) => ({
@@ -32,11 +33,17 @@ export const startExercise = () => ({
   payload: null,
 });
 
-export const answerQuestion = (id, solution) => ({
+export const answerQuestion = (answer) => ({
   type: ANSWER_QUESTION,
   payload: {
-    id,
-    solution,
+    answer,
+  },
+});
+
+export const validateAnswer = (result) => ({
+  type: VALIDATE_ANSWER,
+  payload: {
+    result,
   },
 });
 
