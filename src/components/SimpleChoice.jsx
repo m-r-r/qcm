@@ -29,14 +29,18 @@ export default class SimpleChoice extends Component {
         <p className='SingleChoice__text'>{text}</p>
         <ul>
         {
-          options.map((option, index) => (
-            <li key={index} className='SingleChoice__choice'>
-              <input type='radio' className='SingleChoice__checkbox'
-                     name={this.radiosName} value={index} checked={value === index}
-                     disabled={disabled} onChange={this.handleCheckboxChange.bind(this, index)} />
-              {option}
-            </li>
-          ))
+          options.map((option, index) => {
+            const id = this.radiosName + '-' + index;
+            return (
+              <li key={index} className='SingleChoice__choice'>
+                <input type='radio' className='SingleChoice__checkbox'
+                       id={id} tabIndex={index + 1}
+                       name={this.radiosName} value={index} checked={value === index}
+                       disabled={disabled} onChange={this.handleCheckboxChange.bind(this, index)} />
+                <label htmlFor={id}>{option}</label>
+              </li>
+            );
+          })
         }
         </ul>
       </div>

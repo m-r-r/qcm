@@ -1,12 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import {intercalateWith, newId} from '../utils';
-
-const COMPLETION_PATTERN = /\%/;
-
-const prepareText = (text) => text.split(COMPLETION_PATTERN).map(
-  (text) => text.replace('%%', '%')
-);
+import {intercalateWith, splitText} from '../utils';
 
 export default class CompletableText extends Component {
   static propTypes = {
@@ -25,18 +19,16 @@ export default class CompletableText extends Component {
 
   constructor (props, context) {
     super(props, context);
-    this.id = newId('ct');
     this.state = {
-      textParts: prepareText(props.text),
+      textParts: splitText(props.text),
     };
     this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   componentWillReceiveProps (props) {
     if (props.text !== this.props.text) {
-      this.id = newId('ct');
       this.setState({
-        textParts: prepareText(props.text),
+        textParts: splitText(props.text),
       });
     }
   }
@@ -55,7 +47,7 @@ export default class CompletableText extends Component {
         intercalateWith(textParts, (index) => (
           <select onChange={this.handleSelectChange}
                   disabled={disabled}
-                  data-index={index} key={index}
+                  data-index={index} key={index} tabIndex={index + 1}
                   value={value !== null ? value[index] : null}>
             <option value={null} key={-1}></option>
             {selectOptions}

@@ -7,6 +7,9 @@ import ErrorMessage from '../components/ErrorMessage';
 import SimpleChoice from '../components/SimpleChoice';
 import MultipleChoices from '../components/MultipleChoices';
 import CompletableText from '../components/CompletableText';
+import SimpleChoiceSolution from '../components/SimpleChoiceSolution';
+import MultipleChoicesSolution from '../components/MultipleChoicesSolution';
+import CompletableTextSolution from '../components/CompletableTextSolution';
 
 class Client extends Component {
   static propTypes = {
@@ -66,6 +69,21 @@ class Client extends Component {
     }
   }
 
+  get solutionComponent () {
+    const {questions, currentQuestion} = this.props;
+    const question = questions[currentQuestion];
+    switch (question && question.type) {
+      case 'single-choice':
+        return SimpleChoiceSolution;
+      case 'multiple-choices':
+        return MultipleChoicesSolution;
+      case 'completable-text':
+        return CompletableTextSolution;
+      default:
+        throw new Error('Invalid question type');
+    }
+  }
+
   get currentAnswer () {
     const {step, currentQuestion, userAnswers} = this.props;
     const {answer} = this.state;
@@ -116,23 +134,31 @@ class Client extends Component {
   }
 
   renderSolution () {
-    const {step, userResults, currentQuestion} = this.props;
+    const {step, userResults, currentQuestion, questions} = this.props;
 
     if (step !== steps.SOLUTION) {
       return false;
     }
 
-    const {result} = userResults[currentQuestion];
-    if (result === 0) {
+    const result = userResults[currentQuestion];
+    if (result !== 1) {
+      const question = questions[currentQuestion];
       return (
-        <div className='Solution Solution--error'>
-          Error !
+        <div className='Result Result--error'>
+          <h5>Faux</h5>
+          {
+            React.createElement(this.solutionComponent, {
+              question,
+            })
+          }
+          <p>{question.explaination || false}</p>
         </div>
       );
     } else {
       return (
-        <div className='Solution Solution--success'>
-          Success
+        <div className='Result Result--success'>
+          <h5>Juste</h5>
+          <p>Vous avez répondu juste.</p>
         </div>
       );
     }
@@ -144,22 +170,24 @@ class Client extends Component {
     switch (step) {
       case steps.READY:
         return (
-          <button type='button' className='btn btn-primary'
+          <button type='button' className='btn btn-primary' tabIndex='1'
                   onClick={this.handleClickStart}>Commencer</button>
         );
       case steps.INPUT:
+        const {answer} = this.state;
         return (
-          <button type='button' className='btn btn-primary'
+          <button type='button' className='btn btn-primary' tabIndex='99'
+                  disabled={answer === null}
                   onClick={this.handleSubmitAnswer}>Envoyer</button>
         );
       case steps.SOLUTION:
         return (
-          <button type='button' className='btn btn-primary'
+          <button type='button' className='btn btn-primary' tabIndex='99'
                   onClick={this.handleClickNext}>Continuer</button>
         );
       case steps.FINISHED:
         return (
-          <button type='button' className='btn btn-primary'
+          <button type='button' className='btn btn-primary' tabIndex='1'
                   onClick={this.handleClickStart}>Recommencer</button>
         );
       default:

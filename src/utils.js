@@ -2,7 +2,7 @@
 export function intercalateWith (array, func) {
   return array.reduce((acc, item, index) => {
     if (index !== 0) {
-      acc.push(func(index));
+      acc.push(func(index - 1));
     }
     acc.push(item);
     return acc;
@@ -44,4 +44,16 @@ export function propertiesEqual (a, b) {
     }
   }
   return true;
+}
+
+const SPLIT_TEXT_REGEX = /%%?/gm;
+
+function replacePlaceholder (text) {
+  return text === '%%' ? '%' : '￼';
+}
+
+export function splitText (text) {
+  return text.replace('￼', '')
+             .replace(SPLIT_TEXT_REGEX, replacePlaceholder)
+             .split('￼');
 }
