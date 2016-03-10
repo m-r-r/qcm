@@ -34,7 +34,7 @@ export default class MultipleChoice extends Component {
       checked: checkedIndexes(props.value, props.options),
     };
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.id = newId("choice");
+    this.id = newId('choice');
   }
 
   componentWillReceiveProps (props) {
@@ -57,7 +57,7 @@ export default class MultipleChoice extends Component {
             return (
               <li key={index} className='MultipleChoice__choice'>
                 <input type='checkbox' className='MultipleChoice__checkbox'
-                       checked={!!checked[index]}
+                       checked={!!checked[index]} autoFocus={index === 0}
                        data-index={index} tabIndex={index + 1} id={id}
                        disabled={disabled} onChange={this.handleCheckboxChange} />
                 <label htmlFor={id}>{option}</label>

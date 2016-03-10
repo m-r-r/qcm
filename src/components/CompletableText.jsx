@@ -46,7 +46,7 @@ export default class CompletableText extends Component {
       {
         intercalateWith(textParts, (index) => (
           <select onChange={this.handleSelectChange}
-                  disabled={disabled}
+                  disabled={disabled} autoFocus={index === 0}
                   data-index={index} key={index} tabIndex={index + 1}
                   value={value !== null ? value[index] : null}>
             <option value={null} key={-1}></option>

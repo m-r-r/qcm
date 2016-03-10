@@ -34,7 +34,7 @@ export default class SimpleChoice extends Component {
             return (
               <li key={index} className='SingleChoice__choice'>
                 <input type='radio' className='SingleChoice__checkbox'
-                       id={id} tabIndex={index + 1}
+                       id={id} tabIndex={index + 1} autoFocus={index === 0}
                        name={this.radiosName} value={index} checked={value === index}
                        disabled={disabled} onChange={this.handleCheckboxChange.bind(this, index)} />
                 <label htmlFor={id}>{option}</label>
