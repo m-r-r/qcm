@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const path = require('path');
 
 const DEV = process.env.NODE_ENV !== "production";
@@ -14,7 +15,7 @@ const PORT = process.env.PORT || 8080;
 const config = {
   context: SRC_DIR,
   entry: {
-    client: ["./client/main.js"],
+    client: ["./client/style.scss", "./client/main.js"],
     example: ["file?name=[name].[ext]?v=[hash]!./example.json"],
   },
   target: 'web',
@@ -27,7 +28,8 @@ const config = {
 
   resolve: {
     root: path.resolve(SRC_DIR),
-    extensions: ['', '.js', '.jsx', '.json'],
+    extensions: ['', '.js', '.jsx', '.json', '.scss'],
+    aliases: {}
   },
 
   module: {
@@ -51,7 +53,7 @@ const config = {
         exclude: [path.join(SRC_DIR, 'example.json')]
       },
       {
-        loaders: ['style', 'sass?sourceMap'],
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass'),
         test: /\.scss$/,
         include: [SRC_DIR, NODE_MODULES_DIR],
       },
@@ -65,8 +67,11 @@ const config = {
       { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' }
     ],
 
+    sassLoader: {
+      sourceMap: true,
+      includePaths: [path.join(NODE_MODULES_DIR, 'normalize.css')],
+    },
 
-    devtool: 'eval-source-map',
     devServer: {
       contentBase: BUILD_DIR,
       hot: true,
@@ -78,6 +83,7 @@ const config = {
       port: PORT,
     },
   },
+  devtool: 'eval-source-map',
 
   plugins: [
     new HtmlWebpackPlugin({
@@ -90,6 +96,7 @@ const config = {
         },
         chunks: ["client"],
     }),
+    new ExtractTextPlugin("[name].css"),
   ],
 };
 

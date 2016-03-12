@@ -1,0 +1,26 @@
+.SingleChoice {
+  &__text {
+
+  }
+
+  &__choice {
+    display: block;
+    list-style-type: none;
+    padding: .25em 0;
+    overflow-y: auto;
+
+    > input,
+    > label {
+      vertical-align: top;
+      float: left;
+    }
+    > input {
+      display: inline-block;
+      min-width: 2em;
+      margin-top: .05em;
+    }
+    > label {
+      display: table;
+    }
+  }
+}

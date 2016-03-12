@@ -1,0 +1,67 @@
+@import "~normalize.css";
+
+@import "../components/SingleChoice.scss";
+@import "../components/MultipleChoices.scss";
+
+$primary-color: #3498DB;
+$success-color: #3498DB;
+$warninf-color: #3498DB;
+$error-color: #3498DB;
+
+$btn-text-color: #fff !default;
+
+
+@mixin btn-color ($background-color, $color, $define-pseudos: true) {
+  background-color: $background-color;
+  background-image: linear-gradient(to bottom, $background-color, desaturate(darken($background-color, 3%), 3%));
+  color: $color;
+  border-color: desaturate(darken($background-color, 10%), 10%);
+
+  @if ($define-pseudos) {
+    &.btn:active,
+    &.btn-active {
+      &, &:hover {
+        @include btn-color(darken($background-color, 5%), $color, false);
+      }
+    }
+
+    &.btn:hover,
+    &.btn-hover {
+      @include btn-color(lighten($background-color, 3%), $color, false);
+    }
+
+    &:focus {
+      outline-color: $color;
+    }
+  }
+}
+
+.btn {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: .25em;
+  margin: 0 .25em .25em;
+  padding: .5em 1em;
+  border-width: .05em;
+  border-style: solid;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background 250ms ease-in-out;
+
+  @include btn-color(#eaeaea, #333);
+
+  &:focus {
+    outline-width: thin;
+    outline-style: dotted;
+    outline-offset: -.1em;
+  }
+
+  &-primary {
+    @include btn-color($primary-color, white);
+  }
+}
+
+button, input[type="submit"], input[type="reset"] {
+  @extend .btn;
+}

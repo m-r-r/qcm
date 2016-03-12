@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 
 import {actions, steps} from '../client';
 import ErrorMessage from '../components/ErrorMessage';
-import SimpleChoice from '../components/SimpleChoice';
+import SingleChoice from '../components/SingleChoice';
 import MultipleChoices from '../components/MultipleChoices';
 import CompletableText from '../components/CompletableText';
-import SimpleChoiceSolution from '../components/SimpleChoiceSolution';
+import SingleChoiceSolution from '../components/SingleChoiceSolution';
 import MultipleChoicesSolution from '../components/MultipleChoicesSolution';
 import CompletableTextSolution from '../components/CompletableTextSolution';
 
@@ -59,7 +59,7 @@ class Client extends Component {
     const question = questions[currentQuestion];
     switch (question && question.type) {
       case 'single-choice':
-        return SimpleChoice;
+        return SingleChoice;
       case 'multiple-choices':
         return MultipleChoices;
       case 'completable-text':
@@ -74,7 +74,7 @@ class Client extends Component {
     const question = questions[currentQuestion];
     switch (question && question.type) {
       case 'single-choice':
-        return SimpleChoiceSolution;
+        return SingleChoiceSolution;
       case 'multiple-choices':
         return MultipleChoicesSolution;
       case 'completable-text':

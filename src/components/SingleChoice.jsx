@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 
 import {newId} from '../utils';
 
-export default class SimpleChoice extends Component {
+export default class SingleChoice extends Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(PropTypes.string).isRequired,
