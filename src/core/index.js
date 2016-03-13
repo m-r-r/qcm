@@ -19,3 +19,21 @@ export function validateAnswer (question, answer) {
       return new Error('not implemented');
   }
 }
+
+export function questionCoefficient (question) {
+  if (typeof question.coefficient === 'number' && question.coefficient > 0) {
+    return question.coefficient;
+  } else {
+    return 1;
+  }
+}
+
+const addCoeff = (total, question) => total + questionCoefficient(question);
+
+export function exerciseMaxScore ({questions}) {
+  if (Array.isArray(questions)) {
+    return questions.reduce(addCoeff, 0);
+  } else {
+    return 0;
+  }
+}

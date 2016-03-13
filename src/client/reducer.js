@@ -1,4 +1,5 @@
 import * as actions from './actions';
+import { exerciseMaxScore } from '../core';
 
 export const steps = {
   FAILURE: 'FAILURE',
@@ -16,7 +17,7 @@ export const INITIAL_STATE = {
   error: null,
   currentQuestion: null,
   userAnswers: {},
-  userResults: {},
+  userScore: {},
 };
 
 export default function reducer (state = INITIAL_STATE, action) {
@@ -60,7 +61,10 @@ export default function reducer (state = INITIAL_STATE, action) {
         step: steps.INPUT,
         currentQuestion: 0,
         userAnswers: {},
-        userResults: {},
+        userScore: {
+          total: 0,
+          max: exerciseMaxScore(state),
+        },
       };
 
     case actions.ANSWER_QUESTION:
@@ -84,14 +88,16 @@ export default function reducer (state = INITIAL_STATE, action) {
         if (state.step !== steps.INPUT) {
           return state;
         }
-        const {result} = payload;
-        const {currentQuestion} = state;
+        const {score} = payload;
+        const {currentQuestion, userScore} = state;
+        const total = userScore.total + score;
         return {
           ...state,
           step: steps.SOLUTION,
-          userResults: {
-            ...state.userResults,
-            [currentQuestion]: result ? 1 : 0,
+          userScore: {
+            ...userScore,
+            [currentQuestion]: score,
+            total,
           },
         };
       }

@@ -40,10 +40,10 @@ export const answerQuestion = (answer) => ({
   },
 });
 
-export const validateAnswer = (result) => ({
+export const validateAnswer = (score) => ({
   type: VALIDATE_ANSWER,
   payload: {
-    result,
+    score,
   },
 });
 

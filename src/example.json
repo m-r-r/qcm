@@ -1,38 +1,43 @@
 {
   "metadata": {
-    "title": "Example exercise"
+    "title": "Exercice de test",
+    "instructions": "Avant de répondre aux questions, réfléchissez bien !",
+    "grading_scale": 20
   },
   "questions": [
     {
       "type": "single-choice",
-      "text": "Question with a single answer",
+      "text": "Question avec une seule réponse possible",
+      "coefficient": 0.5,
       "options": [
-        "Incorrect answer",
-        "Correct answer"
+        "Mauvaise réponse",
+        "Bonne réponse"
       ],
       "solution": 1
     },
     {
       "type": "multiple-choices",
-      "text": "Question with a multiple answers",
+      "text": "Question avec plusieurs réponses possibles",
+      "coefficient": 1.5,
       "options": [
-        "Incorrect answer A",
-        "Correct answer 1",
-        "Incorrect answer B",
-        "Correct answer 2",
-        "Incorrect answer C"
+        "Mauvaise réponse 1",
+        "Bonne réponse 1",
+        "Mauvaise réponse 2",
+        "Bonne réponse 2",
+        "Mauvaise réponse 3"
       ],
       "solution": [1, 3]
     },
     {
       "type": "completable-text",
-      "text": "There is % missing % in this sentence.",
+      "text": "Il y a un % qui manque dans % phrase.",
+      "coefficient": 2.0,
       "options": [
-        "word", "some", "letter", "a"
+        "ces", "cette", "lettre", "mot"
       ],
       "solution": {
         "0": 3,
-        "1": 0
+        "1": 1
       }
     }
   ]

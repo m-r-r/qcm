@@ -1,6 +1,6 @@
 import { take, put, call, fork } from 'redux-saga/effects';
 import { NetworkError, DecodeError } from './errors';
-import { validateAnswer, validateExerciseObject } from '../core';
+import { validateAnswer, validateExerciseObject, questionCoefficient } from '../core';
 import * as actions from './actions';
 
 export function * watchLoadExercise () {
@@ -26,9 +26,11 @@ export function * watchAnswerQuestion (getState) {
   while (true) {
     let {payload: {answer}} = yield take(actions.ANSWER_QUESTION);
 
-    let state = getState();
-    let question = state.questions[state.currentQuestion];
-    yield put(actions.validateAnswer(validateAnswer(question, answer)));
+    const state = getState();
+    const question = state.questions[state.currentQuestion];
+    const coefficient = questionCoefficient(question);
+    const success = validateAnswer(question, answer);
+    yield put(actions.validateAnswer(success ? coefficient : 0));
   }
 }
 
