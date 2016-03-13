@@ -35,7 +35,7 @@ export default function Result ({question, score}) {
                 question,
               })
             }
-            <p>{question.explaination || false}</p>
+            <p>{question.explainations || false}</p>
           </div>
         )
       }

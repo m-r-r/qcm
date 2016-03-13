@@ -1,4 +1,5 @@
 {
+  "$schema": "http://ctrlaltbksp.eu/questionnaire/schema-01.json",
   "metadata": {
     "title": "Exercice de test",
     "instructions": "Avant de répondre aux questions, réfléchissez bien !",

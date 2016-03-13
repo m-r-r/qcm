@@ -14,7 +14,8 @@ export function * watchLoadExercise () {
       yield put(actions.loadExerciseFailure(new NetworkError(payload.uri)));
     }
 
-    if (validateExerciseObject(json) || true) {
+    debugger;
+    if (validateExerciseObject(json)) {
       yield put(actions.loadExerciseSuccess(json));
     } else {
       yield put(actions.loadExerciseFailure(new DecodeError(payload.uri, validateExerciseObject.errors)));

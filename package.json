@@ -13,12 +13,12 @@
   "dependencies": {
     "history": "^2.0.0",
     "isomorphic-fetch": "^2.2.1",
-    "jsen": "^0.6.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
     "redux": "^3.0.0",
-    "redux-saga": "^0.9.1"
+    "redux-saga": "^0.9.1",
+    "tv4": "^1.2.7"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",

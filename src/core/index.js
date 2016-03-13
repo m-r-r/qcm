@@ -1,9 +1,15 @@
-import jsen from 'jsen';
+import tv4 from 'tv4';
 
 import { arePermutations, propertiesEqual } from '../utils';
 import exerciseSchema from './schema.json';
 
-export const validateExerciseObject = jsen(exerciseSchema);
+tv4.addSchema(exerciseSchema.id, exerciseSchema);
+
+export const validateExerciseObject = (json) => {
+  const result = tv4.validate(json, exerciseSchema);
+  validateExerciseObject.errors = tv4.error ? [tv4.error] : [];
+  return result;
+};
 
 export function validateAnswer (question, answer) {
   const {type, solution} = question;

@@ -95,11 +95,6 @@
         }
       }
     },
-    "jsen": {
-      "version": "0.6.0",
-      "from": "jsen@*",
-      "resolved": "https://registry.npmjs.org/jsen/-/jsen-0.6.0.tgz"
-    },
     "react": {
       "version": "0.14.7",
       "from": "react@>=0.14.0 <0.15.0",
@@ -266,6 +261,11 @@
       "version": "0.9.1",
       "from": "redux-saga@*",
       "resolved": "https://registry.npmjs.org/redux-saga/-/redux-saga-0.9.1.tgz"
+    },
+    "tv4": {
+      "version": "1.2.7",
+      "from": "tv4@*",
+      "resolved": "https://registry.npmjs.org/tv4/-/tv4-1.2.7.tgz"
     }
   }
 }

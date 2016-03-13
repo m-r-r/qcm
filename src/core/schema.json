@@ -6,6 +6,10 @@
 			"type": "integer",
 			"minimum": 0
 		},
+		"positiveNumber": {
+			"type": "number",
+			"minimum": 0
+		},
 		"notEmptyString": {
 			"type": "string",
 			"minLength": 1
@@ -17,10 +21,10 @@
 					"text": {
 						"$ref": "#/definitions/notEmptyString"
 					},
-					"points": {
-						"$ref": "#/definitions/positiveInteger"
+					"coefficient": {
+						"$ref": "#/definitions/positiveNumber"
 					},
-					"explaination": {
+					"explainations": {
 						"$ref": "#/definitions/notEmptyString"
 					}
 				}
@@ -98,6 +102,27 @@
 	},
 	"type": "object",
 	"properties": {
+		"metadata": {
+			"type": "object",
+			"properties": {
+				"title": {
+					"$ref": "#/definitions/notEmptyString"
+				},
+				"instructions": {
+					"$ref": "#/definitions/notEmptyString"
+				},
+				"explainations": {
+					"$ref": "#/definitions/notEmptyString"
+				},
+				"grading_scale": {
+					"oneOf": [{
+						"$ref": "#/definitions/positiveNumber"
+					}, {
+						"enum": ["%"]
+					}]
+				}
+			}
+		},
 		"questions": {
 			"type": "array",
 			"items": {
