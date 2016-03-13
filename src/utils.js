@@ -57,3 +57,8 @@ export function splitText (text) {
              .replace(SPLIT_TEXT_REGEX, replacePlaceholder)
              .split('￼');
 }
+
+export function round10 (number, precision) {
+  const m = Math.pow(10, Math.abs(+precision));
+  return Math.round((+number + 1e-15) * m) / m;
+}

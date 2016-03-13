@@ -7,9 +7,9 @@ import ErrorMessage from '../components/ErrorMessage';
 import SingleChoice from '../components/SingleChoice';
 import MultipleChoices from '../components/MultipleChoices';
 import CompletableText from '../components/CompletableText';
-import SingleChoiceSolution from '../components/SingleChoiceSolution';
-import MultipleChoicesSolution from '../components/MultipleChoicesSolution';
-import CompletableTextSolution from '../components/CompletableTextSolution';
+import StartScreen from '../components/StartScreen';
+import EndScreen from '../components/EndScreen';
+import Result from '../components/Result';
 
 class Client extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ class Client extends Component {
     questions: PropTypes.arrayOf(PropTypes.object.isRequired),
     currentQuestion: PropTypes.number,
     userAnswers: PropTypes.object.isRequired,
-    userResults: PropTypes.object.isRequired,
+    userScore: PropTypes.object.isRequired,
     metadata: PropTypes.object.isRequired,
     startExercise: PropTypes.func.isRequired,
     answerQuestion: PropTypes.func.isRequired,
@@ -69,21 +69,6 @@ class Client extends Component {
     }
   }
 
-  get solutionComponent () {
-    const {questions, currentQuestion} = this.props;
-    const question = questions[currentQuestion];
-    switch (question && question.type) {
-      case 'single-choice':
-        return SingleChoiceSolution;
-      case 'multiple-choices':
-        return MultipleChoicesSolution;
-      case 'completable-text':
-        return CompletableTextSolution;
-      default:
-        throw new Error('Invalid question type');
-    }
-  }
-
   get currentAnswer () {
     const {step, currentQuestion, userAnswers} = this.props;
     const {answer} = this.state;
@@ -101,32 +86,25 @@ class Client extends Component {
         return <ErrorMessage error={error} />;
 
       case steps.READY:
-        return (
-          <div>
-            <h1>{metadata.title}</h1>
-            <p>{metadata.instructions}</p>
-          </div>
-        );
+        return <StartScreen metadata={metadata} />;
 
       case steps.INPUT:
-      case steps.SOLUTION:
         const question = questions[currentQuestion];
-        return (
-          <div>
-          {
-            React.createElement(this.questionComponent, {
-              ...question,
-              value: this.currentAnswer,
-              onChange: this.handleChangeAnswer,
-              disabled: step === steps.SOLUTION,
-            })
-          }
-          { this.renderSolution() }
-          </div>
-        );
+        return React.createElement(this.questionComponent, {
+          ...question,
+          value: this.currentAnswer,
+          onChange: this.handleChangeAnswer,
+          disabled: step === steps.SOLUTION,
+        });
+
+      case steps.SOLUTION:
+        return this.renderSolution();
 
       case steps.FINISHED:
-        return <p>Finished</p>;
+        const {userScore: {total, max}} = this.props;
+        return <EndScreen metadata={metadata}
+                          score={total / max}
+                          scale={metadata.grading_scale || max} />;
 
       default:
         throw new Error('unreachable code has be reached :-(');
@@ -134,34 +112,15 @@ class Client extends Component {
   }
 
   renderSolution () {
-    const {step, userResults, currentQuestion, questions} = this.props;
+    const {step, userScore, currentQuestion, questions} = this.props;
 
     if (step !== steps.SOLUTION) {
       return false;
     }
 
-    const result = userResults[currentQuestion];
-    if (result !== 1) {
-      const question = questions[currentQuestion];
-      return (
-        <div className='Result Result--error'>
-          <h5>Faux</h5>
-          {
-            React.createElement(this.solutionComponent, {
-              question,
-            })
-          }
-          <p>{question.explaination || false}</p>
-        </div>
-      );
-    } else {
-      return (
-        <div className='Result Result--success'>
-          <h5>Juste</h5>
-          <p>Vous avez répondu juste.</p>
-        </div>
-      );
-    }
+    const score = userScore[currentQuestion];
+    const question = questions[currentQuestion];
+    return <Result question={question} score={score} />;
   }
 
   renderButton () {
