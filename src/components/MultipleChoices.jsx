@@ -48,15 +48,15 @@ export default class MultipleChoice extends Component {
     const {checked} = this.state;
 
     return (
-      <div className='MultipleChoice'>
-        <p className='MultipleChoice__text'>{text}</p>
-        <ul>
+      <div className='MultipleChoices'>
+        <p className='MultipleChoices__text'>{text}</p>
+        <ul className='MultipleChoices__choices'>
         {
           options.map((option, index) => {
             const id = this.id + '-' + index;
             return (
-              <li key={index} className='MultipleChoice__choice'>
-                <input type='checkbox' className='MultipleChoice__checkbox'
+              <li key={index} className='MultipleChoices__choice'>
+                <input type='checkbox' className='MultipleChoices__checkbox'
                        checked={!!checked[index]} autoFocus={index === 0}
                        data-index={index} tabIndex={index + 1} id={id}
                        disabled={disabled} onChange={this.handleCheckboxChange} />

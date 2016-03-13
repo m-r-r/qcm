@@ -1,0 +1,21 @@
+.Result {
+  border-style: solid;
+  border-radius: .25em;
+  border-width: .125em;
+
+  &--success {
+    border-color: $success-color;
+    background-color: saturate(lighten($success-color, 50%), 60%);
+    color: darken($success-color, 15%);
+  }
+
+  &--error {
+    border-color: $error-color;
+    background-color: saturate(lighten($error-color, 50%), 60%);
+    color: darken($error-color, 15%);
+  }
+
+  &__title {
+    color: inherit;
+  }
+}

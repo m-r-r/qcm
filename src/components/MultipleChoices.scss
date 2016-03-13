@@ -1,3 +1,11 @@
 .MultipleChoices {
-  @extend .SingleChoice;
+  &__text {
+    @extend .SingleChoice__text;
+  }
+  &__choices {
+    @extend .SingleChoice__choices;
+  }
+  &__choice {
+    @extend .SingleChoice__choice;
+  }
 }

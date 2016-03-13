@@ -3,24 +3,32 @@
 
   }
 
-  &__choice {
-    display: block;
+  &__choices {
+    display: table;
+    padding: 0;
+    margin: 0 auto;
     list-style-type: none;
+  }
+
+  &__choice {
+    display: table-row;
     padding: .25em 0;
-    overflow-y: auto;
 
     > input,
     > label {
-      vertical-align: top;
-      float: left;
+      display: table-cell;
     }
     > input {
-      display: inline-block;
       min-width: 2em;
-      margin-top: .05em;
+      vertical-align: middle;
+      text-align: center;
     }
     > label {
-      display: table;
+      padding: .25em 0;
+      vertical-align: top;
+      text-align: left; // for legacy browsers
+      text-align: initial;
+      text-rendering: optimizeLegibility;
     }
   }
 }

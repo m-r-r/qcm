@@ -27,7 +27,7 @@ export default class SingleChoice extends Component {
     return (
       <div className='SingleChoice'>
         <p className='SingleChoice__text'>{text}</p>
-        <ul>
+        <ul className='SingleChoice__choices'>
         {
           options.map((option, index) => {
             const id = this.radiosName + '-' + index;

@@ -1,12 +1,16 @@
 @import "~normalize.css";
 
+$primary-color: #3498DB;
+$success-color: #34DB34;
+$warning-color: #DB3516;
+$error-color: #DB1616;
+
 @import "../components/SingleChoice.scss";
 @import "../components/MultipleChoices.scss";
+@import "../components/Result.scss";
+@import "../components/StartScreen.scss";
+@import "../containers/Client.scss";
 
-$primary-color: #3498DB;
-$success-color: #3498DB;
-$warninf-color: #3498DB;
-$error-color: #3498DB;
 
 $btn-text-color: #fff !default;
 
@@ -15,14 +19,12 @@ $btn-text-color: #fff !default;
   background-color: $background-color;
   background-image: linear-gradient(to bottom, $background-color, desaturate(darken($background-color, 3%), 3%));
   color: $color;
-  border-color: desaturate(darken($background-color, 10%), 10%);
 
   @if ($define-pseudos) {
     &.btn:active,
+    &.btn:hover:active,
     &.btn-active {
-      &, &:hover {
-        @include btn-color(darken($background-color, 5%), $color, false);
-      }
+      @include btn-color(darken($background-color, 5%), $color, false);
     }
 
     &.btn:hover,
@@ -32,6 +34,14 @@ $btn-text-color: #fff !default;
 
     &:focus {
       outline-color: $color;
+    }
+    &:disabled {
+      &, &:focus, &:active, &:hover, &:hover:active {
+        $background-color: darken(desaturate($background-color, 50%), 5%);
+        background-color: $background-color;
+        background-image: linear-gradient(to bottom, $background-color, desaturate(darken($background-color, 3%), 3%));
+        border-color: desaturate(darken($background-color, 10%), 10%);
+      }
     }
   }
 }

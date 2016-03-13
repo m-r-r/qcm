@@ -1,0 +1,12 @@
+.QuestionnaireClient {
+  display: block;
+  position: relative;
+  max-width: 30em;
+  margin: 0 auto;
+
+  &__Controls, &__Content {
+    display: block;
+    text-align: center;
+    padding: .5em;
+  }
+}
