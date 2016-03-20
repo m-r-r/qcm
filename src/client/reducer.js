@@ -15,7 +15,7 @@ export const INITIAL_STATE = {
   metadata: {},
   questions: [],
   error: null,
-  currentQuestion: null,
+  currentQuestionIndex: null,
   userAnswers: {},
   userScore: {},
 };
@@ -59,7 +59,7 @@ export default function reducer (state = INITIAL_STATE, action) {
       return {
         ...state,
         step: steps.INPUT,
-        currentQuestion: 0,
+        currentQuestionIndex: 0,
         userAnswers: {},
         userScore: {
           total: 0,
@@ -73,12 +73,12 @@ export default function reducer (state = INITIAL_STATE, action) {
           return state;
         }
         const {answer} = payload;
-        const {currentQuestion} = state;
+        const {currentQuestionIndex} = state;
         return {
           ...state,
           userAnswers: {
             ...state.userAnswers,
-            [currentQuestion]: answer,
+            [currentQuestionIndex]: answer,
           },
         };
       }
@@ -89,14 +89,14 @@ export default function reducer (state = INITIAL_STATE, action) {
           return state;
         }
         const {score} = payload;
-        const {currentQuestion, userScore} = state;
+        const {currentQuestionIndex, userScore} = state;
         const total = userScore.total + score;
         return {
           ...state,
           step: steps.SOLUTION,
           userScore: {
             ...userScore,
-            [currentQuestion]: score,
+            [currentQuestionIndex]: score,
             total,
           },
         };
@@ -104,23 +104,23 @@ export default function reducer (state = INITIAL_STATE, action) {
 
     case actions.NEXT_QUESTION:
       {
-        const {questions, currentQuestion} = state;
+        const {questions, currentQuestionIndex} = state;
         if (state.step !== steps.SOLUTION) {
           return state;
         }
-        const isLastQuestion = state.currentQuestion === questions.length - 1;
+        const isLastQuestion = state.currentQuestionIndex === questions.length - 1;
 
         if (isLastQuestion) {
           return {
             ...state,
             step: steps.FINISHED,
-            currentQuestion: null,
+            currentQuestionIndex: null,
           };
         } else {
           return {
             ...state,
             step: steps.INPUT,
-            currentQuestion: currentQuestion + 1,
+            currentQuestionIndex: currentQuestionIndex + 1,
           };
         }
       }

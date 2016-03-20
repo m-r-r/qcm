@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { createSelector } from 'reselect';
 
-import {actions, steps} from '../client';
+import {actions, steps, selectors} from '../client';
 import ErrorMessage from '../components/ErrorMessage';
 import SingleChoice from '../components/SingleChoice';
 import MultipleChoices from '../components/MultipleChoices';
@@ -17,9 +18,10 @@ class Client extends Component {
     step: PropTypes.string,
     loadExercise: PropTypes.func.isRequired,
     error: PropTypes.instanceOf(Error),
-    questions: PropTypes.arrayOf(PropTypes.object.isRequired),
-    currentQuestion: PropTypes.number,
-    userAnswers: PropTypes.object.isRequired,
+    currentQuestion: PropTypes.object,
+    currentQuestionIndex: PropTypes.number,
+    currentQuestionAnswer: PropTypes.any,
+    currentQuestionScore: PropTypes.any,
     userScore: PropTypes.object.isRequired,
     metadata: PropTypes.object.isRequired,
     startExercise: PropTypes.func.isRequired,
@@ -55,9 +57,8 @@ class Client extends Component {
   }
 
   get questionComponent () {
-    const {questions, currentQuestion} = this.props;
-    const question = questions[currentQuestion];
-    switch (question && question.type) {
+    const {currentQuestion} = this.props;
+    switch (currentQuestion && currentQuestion.type) {
       case 'single-choice':
         return SingleChoice;
       case 'multiple-choices':
@@ -69,14 +70,8 @@ class Client extends Component {
     }
   }
 
-  get currentAnswer () {
-    const {step, currentQuestion, userAnswers} = this.props;
-    const {answer} = this.state;
-    return step === steps.INPUT ? answer : userAnswers[currentQuestion];
-  }
-
   renderContent () {
-    const {step, error, metadata, questions, currentQuestion} = this.props;
+    const {step, error, metadata, currentQuestion, currentQuestionAnswer} = this.props;
 
     switch (step) {
       case steps.LOADING:
@@ -89,10 +84,9 @@ class Client extends Component {
         return <StartScreen metadata={metadata} />;
 
       case steps.INPUT:
-        const question = questions[currentQuestion];
         return React.createElement(this.questionComponent, {
-          ...question,
-          value: this.currentAnswer,
+          ...currentQuestion,
+          value: step === steps.INPUT ? this.state.answer : currentQuestionAnswer,
           onChange: this.handleChangeAnswer,
           disabled: step === steps.SOLUTION,
         });
@@ -112,15 +106,13 @@ class Client extends Component {
   }
 
   renderSolution () {
-    const {step, userScore, currentQuestion, questions} = this.props;
+    const {step, currentQuestion, currentQuestionScore} = this.props;
 
     if (step !== steps.SOLUTION) {
       return false;
     }
 
-    const score = userScore[currentQuestion];
-    const question = questions[currentQuestion];
-    return <Result question={question} score={score} />;
+    return <Result question={currentQuestion} score={currentQuestionScore} />;
   }
 
   renderButton () {
@@ -188,5 +180,19 @@ class Client extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+const mapStateToProps = createSelector(
+  [
+    (s) => s,
+    selectors.currentQuestion,
+    selectors.currentQuestionAnswer,
+    selectors.currentQuestionScore,
+  ],
+  (state, currentQuestion, currentQuestionAnswer, currentQuestionScore) => ({
+    ...state,
+    currentQuestion,
+    currentQuestionAnswer,
+    currentQuestionScore,
+  })
+);
 
-export default connect((s) => s, mapDispatchToProps)(Client);
+export default connect(mapStateToProps, mapDispatchToProps)(Client);

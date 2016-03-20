@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { round10 } from '../utils';
 
-export default function StartScreen ({metadata, score, scale}) {
+export default function EndScreen ({metadata, score, scale}) {
   const total = round10(scale === '%' ? 100 : scale, -2);
   const grade = round10(score * total, -2);
   return (
@@ -27,7 +27,7 @@ export default function StartScreen ({metadata, score, scale}) {
   );
 }
 
-StartScreen.propTypes = {
+EndScreen.propTypes = {
   metadata: PropTypes.object.isRequired,
   scale: PropTypes.oneOfType([
     PropTypes.oneOf(['%']),
@@ -36,6 +36,6 @@ StartScreen.propTypes = {
   score: PropTypes.number.isRequired,
 };
 
-StartScreen.defaultProps = {
+EndScreen.defaultProps = {
   scale: '%',
 };
