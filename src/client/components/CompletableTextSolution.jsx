@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import {intercalateWith, splitText} from '../utils';
+import {intercalateWith, splitText} from '../../utils';
 
 export default function CompletableTextSolution ({question}) {
   const {text, options, solution} = question;

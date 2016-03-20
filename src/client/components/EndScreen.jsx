@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { round10 } from '../utils';
+import { round10 } from '../../utils';
 
 export default function EndScreen ({metadata, score, scale}) {
   const total = round10(scale === '%' ? 100 : scale, -2);

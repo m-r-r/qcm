@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import { newId } from '../utils';
+import { newId } from '../../utils';
 
 const checkedIndexes = (value, options) => {
   if (value === null) {

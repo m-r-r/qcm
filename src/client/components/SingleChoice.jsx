@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import {newId} from '../utils';
+import {newId} from '../../utils';
 
 export default class SingleChoice extends Component {
   static propTypes = {

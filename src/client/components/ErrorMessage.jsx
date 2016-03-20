@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-import { LoadError, NetworkError, DecodeError } from '../client/errors';
+import { LoadError, NetworkError, DecodeError } from '../errors';
 
 export default function ErrorMessage ({error, children}) {
   var message = 'Error';

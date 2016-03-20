@@ -5,11 +5,11 @@ $success-color: #34DB34;
 $warning-color: #DB3516;
 $error-color: #DB1616;
 
-@import "../components/SingleChoice.scss";
-@import "../components/MultipleChoices.scss";
-@import "../components/Result.scss";
-@import "../components/StartScreen.scss";
-@import "../containers/Client.scss";
+@import "./components/SingleChoice.scss";
+@import "./components/MultipleChoices.scss";
+@import "./components/Result.scss";
+@import "./components/StartScreen.scss";
+@import "./containers/Client.scss";
 
 
 $btn-text-color: #fff !default;

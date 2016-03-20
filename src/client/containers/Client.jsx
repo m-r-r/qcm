@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect';
 
-import {actions, steps, selectors} from '../client';
+import {actions, steps, selectors} from '../index';
 import ErrorMessage from '../components/ErrorMessage';
 import SingleChoice from '../components/SingleChoice';
 import MultipleChoices from '../components/MultipleChoices';

@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import {intercalateWith, splitText} from '../utils';
+import {intercalateWith, splitText} from '../../utils';
 
 export default class CompletableText extends Component {
   static propTypes = {
