@@ -1,6 +1,6 @@
 .MultipleChoices {
   &__text {
-    @extend .SingleChoice__text;
+    @extend .SingleChoice__text !optional;
   }
   &__choices {
     @extend .SingleChoice__choices;
