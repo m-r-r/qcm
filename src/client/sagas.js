@@ -3,10 +3,11 @@ import { NetworkError, DecodeError } from './errors';
 import { currentQuestion } from './selectors';
 import { validateAnswer, validateExerciseObject, questionCoefficient } from '../core';
 import * as actions from './actions';
+import { LOAD_EXERCISE, ANSWER_QUESTION } from './constants';
 
 export function * watchLoadExercise () {
   while (true) {
-    let {payload} = yield take(actions.LOAD_EXERCISE);
+    let {payload} = yield take(LOAD_EXERCISE);
     var json;
     try {
       let request = yield call(fetch, payload.uri);
@@ -25,7 +26,7 @@ export function * watchLoadExercise () {
 
 export function * watchAnswerQuestion (getState) {
   while (true) {
-    let {payload: {answer}} = yield take(actions.ANSWER_QUESTION);
+    let {payload: {answer}} = yield take(ANSWER_QUESTION);
 
     const state = getState();
     const question = currentQuestion(state);

@@ -41,7 +41,7 @@ class Client extends Component {
     this.handleClickNext = this.handleClickNext.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.loadExercise(this.props.uri);
   }
 

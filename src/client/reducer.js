@@ -1,3 +1,12 @@
+import {
+  LOAD_EXERCISE,
+  LOAD_EXERCISE_SUCCESS,
+  LOAD_EXERCISE_FAILURE,
+  START_EXERCISE,
+  ANSWER_QUESTION,
+  VALIDATE_ANSWER,
+  NEXT_QUESTION
+} from './constants';
 import * as actions from './actions';
 import { exerciseMaxScore } from '../core';
 
@@ -24,14 +33,14 @@ export default function reducer (state = INITIAL_STATE, action) {
   const {type, payload} = action;
 
   switch (type) {
-    case actions.LOAD_EXERCISE:
+    case LOAD_EXERCISE:
       return {
         ...state,
         step: steps.LOADING,
         error: null,
       };
 
-    case actions.LOAD_EXERCISE_SUCCESS:
+    case LOAD_EXERCISE_SUCCESS:
       {
         const {exercise: {metadata, questions}} = payload;
         return {
@@ -42,7 +51,7 @@ export default function reducer (state = INITIAL_STATE, action) {
           questions,
         };
       }
-    case actions.LOAD_EXERCISE_FAILURE:
+    case LOAD_EXERCISE_FAILURE:
       {
         const {error} = payload;
         return {
@@ -52,7 +61,7 @@ export default function reducer (state = INITIAL_STATE, action) {
         };
       }
 
-    case actions.START_EXERCISE:
+    case START_EXERCISE:
       if (state.step !== steps.READY && state.step !== steps.FINISHED) {
         return state;
       }
@@ -67,7 +76,7 @@ export default function reducer (state = INITIAL_STATE, action) {
         },
       };
 
-    case actions.ANSWER_QUESTION:
+    case ANSWER_QUESTION:
       {
         if (state.step !== steps.INPUT) {
           return state;
@@ -83,7 +92,7 @@ export default function reducer (state = INITIAL_STATE, action) {
         };
       }
 
-    case actions.VALIDATE_ANSWER:
+    case VALIDATE_ANSWER:
       {
         if (state.step !== steps.INPUT) {
           return state;
@@ -102,7 +111,7 @@ export default function reducer (state = INITIAL_STATE, action) {
         };
       }
 
-    case actions.NEXT_QUESTION:
+    case NEXT_QUESTION:
       {
         const {questions, currentQuestionIndex} = state;
         if (state.step !== steps.SOLUTION) {

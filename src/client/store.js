@@ -4,8 +4,13 @@ import rootReducer from './reducer';
 import rootSaga from './sagas';
 
 export function configureStore (initialState) {
-  const middleware = applyMiddleware(createSagaMiddleware(rootSaga));
-  const store = middleware(createStore)(rootReducer, initialState);
+  const sagaMiddleware = createSagaMiddleware();
+  const store = createStore(
+    rootReducer,
+    initialState,
+    applyMiddleware(sagaMiddleware)
+  );
+  sagaMiddleware.run(rootSaga, store.getState);
 
   if (module.hot) {
     module.hot.accept('./reducer', () => {

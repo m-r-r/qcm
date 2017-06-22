@@ -32,7 +32,12 @@ const config = {
       {
         test: /\.jsx?$/,
         include: [SRC_DIR],
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+          }
+        }
       },
       {
         test: /\.json?$/,
@@ -74,7 +79,7 @@ const config = {
     inline: true,
     quiet: true
   },
-  devtool: '#eval-source-map',
+  devtool: DEV ? 'cheap-eval-source-map' : false,
 
   plugins: [
     new HtmlWebpackPlugin({
