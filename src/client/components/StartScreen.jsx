@@ -1,6 +1,10 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 
-export default function StartScreen ({metadata}) {
+export type Props = { metadata: Object };
+
+export default function StartScreen(props: Props) {
+  const {metadata} = props;
   return (
     <div className='StartScreen'>
       <h1 className='StartScreen__title'>{metadata.title}</h1>
@@ -8,7 +12,3 @@ export default function StartScreen ({metadata}) {
     </div>
   );
 }
-
-StartScreen.propTypes = {
-  metadata: PropTypes.object.isRequired,
-};

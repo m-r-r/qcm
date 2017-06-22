@@ -1,3 +1,4 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 
 import SingleChoiceSolution from './SingleChoiceSolution';
@@ -17,7 +18,13 @@ const solutionComponent = (question) => {
   }
 };
 
-export default function Result ({question, score}) {
+export type Props = {
+  question: Object,
+  score: number,
+};
+
+export default function Result(props: Props) {
+  const {question, score} = props;
   const component = solutionComponent(question);
   const success = score > 0;
   const className = 'Result Result--' + (success ? 'success' : 'error');
@@ -42,8 +49,3 @@ export default function Result ({question, score}) {
     </div>
   );
 }
-
-Result.propTypes = {
-  question: PropTypes.object.isRequired,
-  score: PropTypes.number.isRequired,
-};

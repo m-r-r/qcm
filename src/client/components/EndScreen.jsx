@@ -1,7 +1,15 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 import { round10 } from '../../utils';
 
-export default function EndScreen ({metadata, score, scale}) {
+export type Props = {
+  metadata: Object,
+  scale: '%' | number,
+  score: number,
+};
+
+export default function EndScreen(props: Props) {
+  const {metadata, score, scale} = props;
   const total = round10(scale === '%' ? 100 : scale, -2);
   const grade = round10(score * total, -2);
   return (
@@ -26,15 +34,6 @@ export default function EndScreen ({metadata, score, scale}) {
     </div>
   );
 }
-
-EndScreen.propTypes = {
-  metadata: PropTypes.object.isRequired,
-  scale: PropTypes.oneOfType([
-    PropTypes.oneOf(['%']),
-    PropTypes.number,
-  ]).isRequired,
-  score: PropTypes.number.isRequired,
-};
 
 EndScreen.defaultProps = {
   scale: '%',

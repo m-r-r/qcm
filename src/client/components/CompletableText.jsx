@@ -1,31 +1,32 @@
-import React, {Component, PropTypes} from 'react';
+/* @flow */
+import React, { Component, PropTypes } from 'react';
 
 import {intercalateWith, splitText} from '../../utils';
 
+type Props = {
+  text: string,
+  options: string[],
+  value: {[key: number]: number},
+  disabled: bool,
+  onChange: Function,
+};
+
 export default class CompletableText extends Component {
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(PropTypes.string).isRequired,
-    value: PropTypes.objectOf(PropTypes.number),
-    disabled: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
+  props: Props;
 
   static defaultProps = {
     disabled: false,
     onChange: () => void 0,
     value: null,
   };
+  
+  state = {
+    textParts: [],
+  };
 
-  constructor (props, context) {
-    super(props, context);
-    this.state = {
-      textParts: splitText(props.text),
-    };
-    this.handleSelectChange = this.handleSelectChange.bind(this);
-  }
+  handleSelectChange = this.handleSelectChange.bind(this);
 
-  componentWillReceiveProps (props) {
+  componentWillReceiveProps (props: Props) {
     if (props.text !== this.props.text) {
       this.setState({
         textParts: splitText(props.text),
@@ -58,9 +59,10 @@ export default class CompletableText extends Component {
     );
   }
 
-  handleSelectChange (event) {
+  handleSelectChange (event: SyntheticEvent) {
     const {onChange, value} = this.props;
-    const index = event.target.getAttribute('data-index');
-    onChange({...value, [index]: Number(event.target.value)});
+    const target: HTMLSelectElement = (event.target : any);
+    const index: number = Number(target.getAttribute('data-index'));
+    onChange({...value, [index]: Number(target.value)});
   }
 }

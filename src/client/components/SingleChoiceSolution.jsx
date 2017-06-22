@@ -1,6 +1,10 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 
-export default function SingleChoiceSolution ({question}) {
+export type Props = { question: Object };
+
+export default function SingleChoiceSolution(props: Props) {
+  const {question} = props;
   const {options, solution} = question;
   return (
     <div className='Solution Solution--single-choice'>
@@ -8,7 +12,3 @@ export default function SingleChoiceSolution ({question}) {
     </div>
   );
 }
-
-SingleChoiceSolution.propTypes = {
-  question: PropTypes.object.isRequired,
-};

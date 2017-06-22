@@ -1,8 +1,12 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 
 import {intercalateWith, splitText} from '../../utils';
 
-export default function CompletableTextSolution ({question}) {
+export type Props = { question: Object };
+
+export default function CompletableTextSolution(props: Props) {
+  const {question} = props;
   const {text, options, solution} = question;
   return (
     <div className='Solution Solution--completable-text'>
@@ -16,7 +20,3 @@ export default function CompletableTextSolution ({question}) {
     </div>
   );
 }
-
-CompletableTextSolution.propTypes = {
-  question: PropTypes.object.isRequired,
-};

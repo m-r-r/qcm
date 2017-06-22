@@ -1,8 +1,15 @@
+/* @flow */
 import React, { PropTypes } from 'react';
 
 import { LoadError, NetworkError, DecodeError } from '../errors';
 
-export default function ErrorMessage ({error, children}) {
+export type Props = {
+  error: Error,
+  children?: Object,
+};
+
+export default function ErrorMessage(props: Props) {
+  const {error, children} = props;
   var message = 'Error';
   var details = 'An unknown error occured';
   if (error instanceof LoadError) {
@@ -22,8 +29,3 @@ export default function ErrorMessage ({error, children}) {
     </div>
   );
 }
-
-ErrorMessage.propTypes = {
-  error: PropTypes.instanceOf(Error).isRequired,
-  children: PropTypes.object,
-};

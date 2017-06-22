@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+/* @flow */
+import React, { Component, PropTypes } from 'react';
 
 import {newId} from '../../utils';
 
