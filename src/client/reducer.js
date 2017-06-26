@@ -1,3 +1,6 @@
+/* @flow */
+import type { State, Action } from './types';
+
 import {
   LOAD_EXERCISE,
   LOAD_EXERCISE_SUCCESS,
@@ -19,7 +22,7 @@ export const steps = {
   FINISHED: 'FINISHED',
 };
 
-export const INITIAL_STATE = {
+export const INITIAL_STATE: State = {
   step: steps.LOADING,
   metadata: {},
   questions: [],
@@ -29,10 +32,10 @@ export const INITIAL_STATE = {
   userScore: {},
 };
 
-export default function reducer (state = INITIAL_STATE, action) {
+export default function reducer (state: State = INITIAL_STATE, action: Action): State {
   const {type, payload} = action;
 
-  switch (type) {
+  switch (action.type) {
     case LOAD_EXERCISE:
       return {
         ...state,
@@ -42,7 +45,7 @@ export default function reducer (state = INITIAL_STATE, action) {
 
     case LOAD_EXERCISE_SUCCESS:
       {
-        const {exercise: {metadata, questions}} = payload;
+        const {exercise: {metadata, questions}} = action.payload;
         return {
           ...state,
           step: steps.READY,
@@ -53,7 +56,7 @@ export default function reducer (state = INITIAL_STATE, action) {
       }
     case LOAD_EXERCISE_FAILURE:
       {
-        const {error} = payload;
+        const {error} = action.payload;
         return {
           ...state,
           step: steps.FAILURE,
@@ -81,13 +84,13 @@ export default function reducer (state = INITIAL_STATE, action) {
         if (state.step !== steps.INPUT) {
           return state;
         }
-        const {answer} = payload;
+        const {answer} = action.payload;
         const {currentQuestionIndex} = state;
         return {
           ...state,
           userAnswers: {
             ...state.userAnswers,
-            [currentQuestionIndex]: answer,
+            [Number(currentQuestionIndex)]: answer,
           },
         };
       }
@@ -97,7 +100,7 @@ export default function reducer (state = INITIAL_STATE, action) {
         if (state.step !== steps.INPUT) {
           return state;
         }
-        const {score} = payload;
+        const {score} = action.payload;
         const {currentQuestionIndex, userScore} = state;
         const total = userScore.total + score;
         return {
@@ -105,7 +108,7 @@ export default function reducer (state = INITIAL_STATE, action) {
           step: steps.SOLUTION,
           userScore: {
             ...userScore,
-            [currentQuestionIndex]: score,
+            [Number(currentQuestionIndex)]: score,
             total,
           },
         };

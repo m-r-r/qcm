@@ -1,9 +1,9 @@
 /* @flow */
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 export type Props = { question: Object };
 
-export default function SingleChoiceSolution(props: Props) {
+export default function SingleChoiceSolution (props: Props) {
   const {question} = props;
   const {options, solution} = question;
   return (

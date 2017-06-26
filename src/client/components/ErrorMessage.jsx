@@ -1,5 +1,5 @@
 /* @flow */
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 import { LoadError, NetworkError, DecodeError } from '../errors';
 
@@ -8,7 +8,7 @@ export type Props = {
   children?: Object,
 };
 
-export default function ErrorMessage(props: Props) {
+export default function ErrorMessage (props: Props) {
   const {error, children} = props;
   var message = 'Error';
   var details = 'An unknown error occured';

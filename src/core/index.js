@@ -1,3 +1,5 @@
+/* @flow */
+import type { Exercise, Question, Answer } from './types';
 import tv4 from 'tv4';
 
 import { arePermutations, propertiesEqual } from '../utils';
@@ -5,28 +7,27 @@ import exerciseSchema from './schema.json';
 
 tv4.addSchema(exerciseSchema.id, exerciseSchema);
 
-export const validateExerciseObject = (json) => {
+export const validateExerciseObject = (json: Object): bool => {
   const result = tv4.validate(json, exerciseSchema);
   validateExerciseObject.errors = tv4.error ? [tv4.error] : [];
   return result;
 };
 
-export function validateAnswer (question, answer) {
-  const {type, solution} = question;
 
-  switch (type) {
+export function validateAnswer(question: Question, answer: Answer): boolean | Error {
+  switch (question.type) {
     case 'single-choice':
-      return answer === solution;
+      return answer === question.solution;
     case 'multiple-choices':
-      return arePermutations(answer, solution);
+      return Array.isArray(answer) && arePermutations(answer, question.solution);
     case 'completable-text':
-      return propertiesEqual(answer, solution);
+      return (answer instanceof Object) && propertiesEqual(answer, question.solution);
     default:
       return new Error('not implemented');
   }
 }
 
-export function questionCoefficient (question) {
+export function questionCoefficient (question: Question): number {
   if (typeof question.coefficient === 'number' && question.coefficient > 0) {
     return question.coefficient;
   } else {
@@ -34,9 +35,11 @@ export function questionCoefficient (question) {
   }
 }
 
-const addCoeff = (total, question) => total + questionCoefficient(question);
+const addCoeff = (total: number, question: Question): number => {
+  return total + questionCoefficient(question);
+};
 
-export function exerciseMaxScore ({questions}) {
+export function exerciseMaxScore ({questions}: Exercise): number {
   if (Array.isArray(questions)) {
     return questions.reduce(addCoeff, 0);
   } else {

@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -12,34 +13,34 @@ import StartScreen from '../components/StartScreen';
 import EndScreen from '../components/EndScreen';
 import Result from '../components/Result';
 
+type Props = {
+  uri: string,
+  step: string,
+  loadExercise: Function,
+  error: Error,
+  currentQuestion: Object,
+  currentQuestionIndex: number,
+  currentQuestionAnswer: any,
+  currentQuestionScore: any,
+  userScore: Object,
+  metadata: Object,
+  startExercise: Function,
+  answerQuestion: Function,
+  nextQuestion: Function,
+};
+
+type State = {
+  answer: any | null,
+};
+
 class Client extends Component {
-  static propTypes = {
-    uri: PropTypes.string,
-    step: PropTypes.string,
-    loadExercise: PropTypes.func.isRequired,
-    error: PropTypes.instanceOf(Error),
-    currentQuestion: PropTypes.object,
-    currentQuestionIndex: PropTypes.number,
-    currentQuestionAnswer: PropTypes.any,
-    currentQuestionScore: PropTypes.any,
-    userScore: PropTypes.object.isRequired,
-    metadata: PropTypes.object.isRequired,
-    startExercise: PropTypes.func.isRequired,
-    answerQuestion: PropTypes.func.isRequired,
-    nextQuestion: PropTypes.func.isRequired,
-  };
-
-  state = {
-    answer: null,
-  };
-
-  constructor (props, context) {
-    super(props, context);
-    this.handleClickStart = this.handleClickStart.bind(this);
-    this.handleChangeAnswer = this.handleChangeAnswer.bind(this);
-    this.handleSubmitAnswer = this.handleSubmitAnswer.bind(this);
-    this.handleClickNext = this.handleClickNext.bind(this);
-  }
+  props: Props;
+  state: State;
+  
+  handleClickStart = this.handleClickStart.bind(this);
+  handleChangeAnswer = this.handleChangeAnswer.bind(this);
+  handleSubmitAnswer = this.handleSubmitAnswer.bind(this);
+  handleClickNext = this.handleClickNext.bind(this);
 
   componentDidMount () {
     this.props.loadExercise(this.props.uri);
@@ -179,8 +180,8 @@ class Client extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-const mapStateToProps = createSelector(
+const mapDispatchToProps: $FlowFixMe = (dispatch) => bindActionCreators(actions, dispatch);
+const mapStateToProps: $FlowFixMe = createSelector(
   [
     (s) => s,
     selectors.currentQuestion,

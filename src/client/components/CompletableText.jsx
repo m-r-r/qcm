@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 import {intercalateWith, splitText} from '../../utils';
 
@@ -13,30 +13,28 @@ type Props = {
 
 export default class CompletableText extends Component {
   props: Props;
+  textPartsCache: ?Array<string>;
 
   static defaultProps = {
     disabled: false,
     onChange: () => void 0,
     value: null,
   };
-  
-  state = {
-    textParts: [],
-  };
 
   handleSelectChange = this.handleSelectChange.bind(this);
 
-  componentWillReceiveProps (props: Props) {
-    if (props.text !== this.props.text) {
-      this.setState({
-        textParts: splitText(props.text),
-      });
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.text !== nextProps.text) {
+      this.textPartsCache = null;
     }
+  }
+  
+  get textParts(): string[] {
+    return this.textPartsCache || (this.textPartsCache = splitText(this.props.text));
   }
 
   render () {
     const {options, value, disabled} = this.props;
-    const {textParts} = this.state;
 
     const selectOptions = options.map(
       (opt, index) => <option value={index} key={index}>{opt}</option>
@@ -45,7 +43,7 @@ export default class CompletableText extends Component {
     return (
       <div className='CompletableText'>
       {
-        intercalateWith(textParts, (index) => (
+        intercalateWith(this.textParts, (index) => (
           <select onChange={this.handleSelectChange}
                   disabled={disabled} autoFocus={index === 0}
                   data-index={index} key={index} tabIndex={index + 1}
@@ -59,10 +57,9 @@ export default class CompletableText extends Component {
     );
   }
 
-  handleSelectChange (event: SyntheticEvent) {
+  handleSelectChange (event: SyntheticInputEvent) {
     const {onChange, value} = this.props;
-    const target: HTMLSelectElement = (event.target : any);
-    const index: number = Number(target.getAttribute('data-index'));
-    onChange({...value, [index]: Number(target.value)});
+    const index: number = Number(event.target.getAttribute('data-index'));
+    onChange({...value, [index]: Number(event.target.value)});
   }
 }

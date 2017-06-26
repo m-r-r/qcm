@@ -18,7 +18,11 @@
 esproposal.class_static_fields=enable
 esproposal.class_instance_fields=enable
 esproposal.decorators=ignore
-
+unsafe.enable_getters_and_setters=true
+module.file_ext=.js
+module.file_ext=.jsx
+module.file_ext=.flow.js
+module.file_ext=.json
 suppress_type=$FlowIssue
 suppress_type=$FlowFixMe
 

@@ -1,44 +1,46 @@
 /* @flow */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 import { newId } from '../../utils';
 
-const checkedIndexes = (value, options) => {
-  if (value === null) {
-    return {};
-  } else {
-    return options.reduce((acc, text, index) => {
-      acc[index] = value.indexOf(index) !== -1;
-      return acc;
-    }, {});
-  }
+type Props = {
+  text: string,
+  options: string[],
+  value: number[],
+  disabled: bool,
+  onChange: Function,
+};
+
+type State = {
+  checked: {
+    [option: number]: bool,
+  },
 };
 
 export default class MultipleChoice extends Component {
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(PropTypes.string).isRequired,
-    value: PropTypes.arrayOf(PropTypes.number),
-    disabled: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
-
   static defaultProps = {
     disabled: false,
     onChange: () => void 0,
     value: null,
   };
-
-  constructor (props, context) {
+  
+  props: Props;
+  state: State;
+  
+  id: string = newId('choice');
+  
+  handleCheckboxChange = this.handleCheckboxChange.bind(this);
+  
+  constructor (props: $Shape<Props>, context: Object) {
     super(props, context);
+    
+    const {value, options} = this.props;
     this.state = {
-      checked: checkedIndexes(props.value, props.options),
+      checked: checkedIndexes(value, options),
     };
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.id = newId('choice');
   }
 
-  componentWillReceiveProps (props) {
+  componentWillReceiveProps (props: Props) {
     if (props.value !== this.props.value) {
       this.setState({checked: checkedIndexes(props.value, props.options)});
     }
@@ -71,10 +73,10 @@ export default class MultipleChoice extends Component {
     );
   }
 
-  handleCheckboxChange (event) {
+  handleCheckboxChange (event: SyntheticInputEvent) {
     const {onChange} = this.props;
-    var {checked} = this.state;
-    const index = event.target.getAttribute('data-index');
+    let {checked} = this.state;
+    const index: number = Number(event.target.getAttribute('data-index'));
 
     checked = {
       ...checked,
@@ -85,3 +87,10 @@ export default class MultipleChoice extends Component {
     onChange(Object.keys(checked).map(Number).filter((key) => checked[key]));
   }
 }
+
+const checkedIndexes = (value: number[] | null, options: string[]): $PropertyType<State, 'checked'> => {
+  return options.reduce((acc, text, index) => {
+    acc[index] = value && value.indexOf(index) !== -1;
+    return acc;
+  }, {});
+};

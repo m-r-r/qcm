@@ -1,29 +1,16 @@
 /* @flow */
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 import SingleChoiceSolution from './SingleChoiceSolution';
 import MultipleChoicesSolution from './MultipleChoicesSolution';
 import CompletableTextSolution from './CompletableTextSolution';
-
-const solutionComponent = (question) => {
-  switch (question.type) {
-    case 'single-choice':
-      return SingleChoiceSolution;
-    case 'multiple-choices':
-      return MultipleChoicesSolution;
-    case 'completable-text':
-      return CompletableTextSolution;
-    default:
-      throw new Error('Invalid question type');
-  }
-};
 
 export type Props = {
   question: Object,
   score: number,
 };
 
-export default function Result(props: Props) {
+export default function Result (props: Props) {
   const {question, score} = props;
   const component = solutionComponent(question);
   const success = score > 0;
@@ -49,3 +36,16 @@ export default function Result(props: Props) {
     </div>
   );
 }
+
+const solutionComponent = (question) => {
+  switch (question.type) {
+    case 'single-choice':
+      return SingleChoiceSolution;
+    case 'multiple-choices':
+      return MultipleChoicesSolution;
+    case 'completable-text':
+      return CompletableTextSolution;
+    default:
+      throw new Error('Invalid question type');
+  }
+};

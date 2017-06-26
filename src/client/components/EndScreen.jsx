@@ -1,5 +1,5 @@
 /* @flow */
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { round10 } from '../../utils';
 
 export type Props = {
@@ -8,7 +8,7 @@ export type Props = {
   score: number,
 };
 
-export default function EndScreen(props: Props) {
+export default function EndScreen (props: Props) {
   const {metadata, score, scale} = props;
   const total = round10(scale === '%' ? 100 : scale, -2);
   const grade = round10(score * total, -2);

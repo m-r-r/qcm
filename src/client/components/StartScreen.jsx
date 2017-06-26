@@ -1,9 +1,9 @@
 /* @flow */
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 export type Props = { metadata: Object };
 
-export default function StartScreen(props: Props) {
+export default function StartScreen (props: Props) {
   const {metadata} = props;
   return (
     <div className='StartScreen'>

@@ -1,3 +1,4 @@
+/* @flow */
 import {
   LOAD_EXERCISE,
   LOAD_EXERCISE_SUCCESS,
@@ -8,21 +9,23 @@ import {
   NEXT_QUESTION
 } from './constants';
 
-export const loadExercise = (uri) => ({
+import type { Action, Exercise } from './types';
+
+export const loadExercise = (uri: string): Action => ({
   type: LOAD_EXERCISE,
   payload: {
     uri,
   },
 });
 
-export const loadExerciseSuccess = (exercise) => ({
+export const loadExerciseSuccess = (exercise: Exercise): Action => ({
   type: LOAD_EXERCISE_SUCCESS,
   payload: {
     exercise,
   },
 });
 
-export const loadExerciseFailure = (error) => ({
+export const loadExerciseFailure = (error: Error): Action => ({
   type: LOAD_EXERCISE_FAILURE,
   error: true,
   payload: {
@@ -30,26 +33,26 @@ export const loadExerciseFailure = (error) => ({
   },
 });
 
-export const startExercise = () => ({
-  type: START_EXERCISE,
-  payload: null,
+export const startExercise = (): Action => ({
+  type: (START_EXERCISE: 'START_EXERCISE'),
+  payload: {},
 });
 
-export const answerQuestion = (answer) => ({
+export const answerQuestion = (answer: Object): Action => ({
   type: ANSWER_QUESTION,
   payload: {
     answer,
   },
 });
 
-export const validateAnswer = (score) => ({
+export const validateAnswer = (score: number): Action => ({
   type: VALIDATE_ANSWER,
   payload: {
     score,
   },
 });
 
-export const nextQuestion = () => ({
-  type: NEXT_QUESTION,
-  payload: null,
+export const nextQuestion = (): Action => ({
+  type: (NEXT_QUESTION: 'NEXT_QUESTION'),
+  payload: {},
 });

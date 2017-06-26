@@ -1,3 +1,6 @@
+/* @flow */
+import type { State } from './types';
+// $FlowFixMe
 import { take, put, call, fork } from 'redux-saga/effects';
 import { NetworkError, DecodeError } from './errors';
 import { currentQuestion } from './selectors';
@@ -5,7 +8,10 @@ import { validateAnswer, validateExerciseObject, questionCoefficient } from '../
 import * as actions from './actions';
 import { LOAD_EXERCISE, ANSWER_QUESTION } from './constants';
 
-export function * watchLoadExercise () {
+
+type GetState = () => State;
+
+export function * watchLoadExercise (): Generator<*, *, *> {
   while (true) {
     let {payload} = yield take(LOAD_EXERCISE);
     var json;
@@ -14,6 +20,7 @@ export function * watchLoadExercise () {
       json = yield call(request.json.bind(request));
     } catch (err) {
       yield put(actions.loadExerciseFailure(new NetworkError(payload.uri)));
+      continue;
     }
 
     if (validateExerciseObject(json)) {
@@ -24,7 +31,7 @@ export function * watchLoadExercise () {
   }
 }
 
-export function * watchAnswerQuestion (getState) {
+export function * watchAnswerQuestion (getState: GetState): Generator<*, *, *> {
   while (true) {
     let {payload: {answer}} = yield take(ANSWER_QUESTION);
 
@@ -36,7 +43,7 @@ export function * watchAnswerQuestion (getState) {
   }
 }
 
-export default function * rootSaga (getState) {
+export default function * rootSaga (getState: GetState): Generator<*, *, *> {
   yield fork(watchLoadExercise);
   yield fork(watchAnswerQuestion, getState);
 }

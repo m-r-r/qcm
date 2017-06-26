@@ -1,22 +1,26 @@
 /* @flow */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 import {newId} from '../../utils';
 
-export default class SingleChoice extends Component {
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(PropTypes.string).isRequired,
-    value: PropTypes.number,
-    disabled: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
+type Props = {
+  text: string,
+  options: string[],
+  value: number,
+  disabled: bool,
+  onChange: Function,
+};
 
+export default class SingleChoice extends Component {
   static defaultProps = {
     disabled: false,
     onChange: () => void 0,
     value: null,
   };
+  
+  props: Props;
+  
+  radiosName: string;
 
   componentWillMount () {
     this.radiosName = newId('simple-choice-form-');
@@ -48,7 +52,7 @@ export default class SingleChoice extends Component {
     );
   }
 
-  handleCheckboxChange (index, event) {
+  handleCheckboxChange (index: number, event: SyntheticInputEvent) {
     const checked = Number(event.target.value);
     this.props.onChange(checked);
   }
