@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Client from './containers/Client';
-import { Provider } from 'react-redux';
-import { configureStore } from './index';
+import {Provider} from 'react-redux';
+import {configureStore} from './index';
 
 window.addEventListener('load', () => {
   let elements = document.getElementsByClassName('questionnaire');
@@ -16,8 +16,8 @@ window.addEventListener('load', () => {
       let store = configureStore();
       // store.subscribe((object) => console.debug('state', store.getState()));
       ReactDOM.render(
-        <Provider store={ store }>
-          <Client uri={ uri } />
+        <Provider store={store}>
+          <Client uri={uri} />
         </Provider>,
         element
       );

@@ -6,10 +6,10 @@ import {
   START_EXERCISE,
   ANSWER_QUESTION,
   VALIDATE_ANSWER,
-  NEXT_QUESTION
+  NEXT_QUESTION,
 } from './constants';
 
-import type { Action, Exercise } from './types';
+import type {Action, Exercise} from './types';
 
 export const loadExercise = (uri: string): Action => ({
   type: LOAD_EXERCISE,

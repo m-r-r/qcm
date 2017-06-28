@@ -1,17 +1,20 @@
 /* @flow */
-import type { State } from './types';
+import type {State} from './types';
 // $FlowFixMe
-import { take, put, call, fork } from 'redux-saga/effects';
-import { NetworkError, DecodeError } from './errors';
-import { currentQuestion } from './selectors';
-import { validateAnswer, validateExerciseObject, questionCoefficient } from '../core';
+import {take, put, call, fork} from 'redux-saga/effects';
+import {NetworkError, DecodeError} from './errors';
+import {currentQuestion} from './selectors';
+import {
+  validateAnswer,
+  validateExerciseObject,
+  questionCoefficient,
+} from '../core';
 import * as actions from './actions';
-import { LOAD_EXERCISE, ANSWER_QUESTION } from './constants';
-
+import {LOAD_EXERCISE, ANSWER_QUESTION} from './constants';
 
 type GetState = () => State;
 
-export function * watchLoadExercise (): Generator<*, *, *> {
+export function* watchLoadExercise(): Generator<*, *, *> {
   while (true) {
     let {payload} = yield take(LOAD_EXERCISE);
     var json;
@@ -26,12 +29,16 @@ export function * watchLoadExercise (): Generator<*, *, *> {
     if (validateExerciseObject(json)) {
       yield put(actions.loadExerciseSuccess(json));
     } else {
-      yield put(actions.loadExerciseFailure(new DecodeError(payload.uri, validateExerciseObject.errors)));
+      yield put(
+        actions.loadExerciseFailure(
+          new DecodeError(payload.uri, validateExerciseObject.errors)
+        )
+      );
     }
   }
 }
 
-export function * watchAnswerQuestion (getState: GetState): Generator<*, *, *> {
+export function* watchAnswerQuestion(getState: GetState): Generator<*, *, *> {
   while (true) {
     let {payload: {answer}} = yield take(ANSWER_QUESTION);
 
@@ -43,7 +50,7 @@ export function * watchAnswerQuestion (getState: GetState): Generator<*, *, *> {
   }
 }
 
-export default function * rootSaga (getState: GetState): Generator<*, *, *> {
+export default function* rootSaga(getState: GetState): Generator<*, *, *> {
   yield fork(watchLoadExercise);
   yield fork(watchAnswerQuestion, getState);
 }

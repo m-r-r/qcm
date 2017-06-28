@@ -1,6 +1,6 @@
-import { steps } from './reducer';
+import {steps} from './reducer';
 
-export function currentQuestion (state) {
+export function currentQuestion(state) {
   switch (state.step) {
     case steps.INPUT:
     case steps.SOLUTION:
@@ -10,7 +10,7 @@ export function currentQuestion (state) {
   }
 }
 
-export function currentQuestionAnswer (state) {
+export function currentQuestionAnswer(state) {
   if (state.step === steps.INPUT) {
     return state.userAnswers[state.currentQuestionIndex];
   } else {
@@ -18,7 +18,7 @@ export function currentQuestionAnswer (state) {
   }
 }
 
-export function currentQuestionScore (state) {
+export function currentQuestionScore(state) {
   if (state.step === steps.SOLUTION) {
     return state.userScore[state.currentQuestionIndex];
   } else {

@@ -1,8 +1,8 @@
 /* @flow */
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { createSelector } from 'reselect';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {createSelector} from 'reselect';
 
 import {actions, steps, selectors} from '../index';
 import ErrorMessage from '../components/ErrorMessage';
@@ -36,28 +36,28 @@ type State = {
 class Client extends Component {
   props: Props;
   state: State;
-  
+
   handleClickStart = this.handleClickStart.bind(this);
   handleChangeAnswer = this.handleChangeAnswer.bind(this);
   handleSubmitAnswer = this.handleSubmitAnswer.bind(this);
   handleClickNext = this.handleClickNext.bind(this);
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.loadExercise(this.props.uri);
   }
 
-  componentWillReceiveProps (props) {
+  componentWillReceiveProps(props) {
     if (props.currentQuestion !== this.props.currentQuestion) {
       this.setState({answer: null});
     }
   }
 
-  get className () {
+  get className() {
     const {step} = this.props;
     return `QuestionnaireClient QuestionnaireClient--${step.toLowerCase()}`;
   }
 
-  get questionComponent () {
+  get questionComponent() {
     const {currentQuestion} = this.props;
     switch (currentQuestion && currentQuestion.type) {
       case 'single-choice':
@@ -71,8 +71,14 @@ class Client extends Component {
     }
   }
 
-  renderContent () {
-    const {step, error, metadata, currentQuestion, currentQuestionAnswer} = this.props;
+  renderContent() {
+    const {
+      step,
+      error,
+      metadata,
+      currentQuestion,
+      currentQuestionAnswer,
+    } = this.props;
 
     switch (step) {
       case steps.LOADING:
@@ -87,7 +93,9 @@ class Client extends Component {
       case steps.INPUT:
         return React.createElement(this.questionComponent, {
           ...currentQuestion,
-          value: step === steps.INPUT ? this.state.answer : currentQuestionAnswer,
+          value: step === steps.INPUT
+            ? this.state.answer
+            : currentQuestionAnswer,
           onChange: this.handleChangeAnswer,
           disabled: step === steps.SOLUTION,
         });
@@ -97,16 +105,20 @@ class Client extends Component {
 
       case steps.FINISHED:
         const {userScore: {total, max}} = this.props;
-        return <EndScreen metadata={metadata}
-                          score={total / max}
-                          scale={metadata.grading_scale || max} />;
+        return (
+          <EndScreen
+            metadata={metadata}
+            score={total / max}
+            scale={metadata.grading_scale || max}
+          />
+        );
 
       default:
         throw new Error('unreachable code has be reached :-(');
     }
   }
 
-  renderSolution () {
+  renderSolution() {
     const {step, currentQuestion, currentQuestionScore} = this.props;
 
     if (step !== steps.SOLUTION) {
@@ -116,74 +128,95 @@ class Client extends Component {
     return <Result question={currentQuestion} score={currentQuestionScore} />;
   }
 
-  renderButton () {
+  renderButton() {
     const {step} = this.props;
 
     switch (step) {
       case steps.READY:
         return (
-          <button type='button' className='btn btn-primary' tabIndex='1'
-                  onClick={this.handleClickStart}>Commencer</button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            tabIndex="1"
+            onClick={this.handleClickStart}>
+            Commencer
+          </button>
         );
       case steps.INPUT:
         const {answer} = this.state;
         return (
-          <button type='button' className='btn btn-primary' tabIndex='99'
-                  disabled={answer === null}
-                  onClick={this.handleSubmitAnswer}>Envoyer</button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            tabIndex="99"
+            disabled={answer === null}
+            onClick={this.handleSubmitAnswer}>
+            Envoyer
+          </button>
         );
       case steps.SOLUTION:
         return (
-          <button type='button' className='btn btn-primary' tabIndex='99'
-                  onClick={this.handleClickNext}>Continuer</button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            tabIndex="99"
+            onClick={this.handleClickNext}>
+            Continuer
+          </button>
         );
       case steps.FINISHED:
         return (
-          <button type='button' className='btn btn-primary' tabIndex='1'
-                  onClick={this.handleClickStart}>Recommencer</button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            tabIndex="1"
+            onClick={this.handleClickStart}>
+            Recommencer
+          </button>
         );
       default:
         return false;
     }
   }
 
-  render () {
+  render() {
     return (
       <div className={this.className}>
-        <div className='QuestionnaireClient__Content'>
+        <div className="QuestionnaireClient__Content">
           {this.renderContent()}
         </div>
-        <div className='QuestionnaireClient__Controls'>
+        <div className="QuestionnaireClient__Controls">
           {this.renderButton()}
         </div>
       </div>
     );
   }
 
-  handleClickStart () {
+  handleClickStart() {
     this.props.startExercise();
   }
 
-  handleChangeAnswer (answer) {
+  handleChangeAnswer(answer) {
     this.setState({answer});
   }
 
-  handleSubmitAnswer () {
+  handleSubmitAnswer() {
     const {answer} = this.state;
     if (answer !== null) {
       this.props.answerQuestion(answer);
     }
   }
 
-  handleClickNext () {
+  handleClickNext() {
     this.props.nextQuestion();
   }
 }
 
-const mapDispatchToProps: $FlowFixMe = (dispatch) => bindActionCreators(actions, dispatch);
+const mapDispatchToProps: $FlowFixMe = dispatch =>
+  bindActionCreators(actions, dispatch);
 const mapStateToProps: $FlowFixMe = createSelector(
   [
-    (s) => s,
+    s => s,
     selectors.currentQuestion,
     selectors.currentQuestionAnswer,
     selectors.currentQuestionScore,

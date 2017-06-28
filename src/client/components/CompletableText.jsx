@@ -1,5 +1,5 @@
 /* @flow */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import {intercalateWith, splitText} from '../../utils';
 
@@ -7,7 +7,7 @@ type Props = {
   text: string,
   options: string[],
   value: {[key: number]: number},
-  disabled: bool,
+  disabled: boolean,
   onChange: Function,
 };
 
@@ -28,36 +28,40 @@ export default class CompletableText extends Component {
       this.textPartsCache = null;
     }
   }
-  
+
   get textParts(): string[] {
-    return this.textPartsCache || (this.textPartsCache = splitText(this.props.text));
+    return (
+      this.textPartsCache || (this.textPartsCache = splitText(this.props.text))
+    );
   }
 
-  render () {
+  render() {
     const {options, value, disabled} = this.props;
 
-    const selectOptions = options.map(
-      (opt, index) => <option value={index} key={index}>{opt}</option>
+    const selectOptions = options.map((opt, index) =>
+      <option value={index} key={index}>{opt}</option>
     );
 
     return (
-      <div className='CompletableText'>
-      {
-        intercalateWith(this.textParts, (index) => (
-          <select onChange={this.handleSelectChange}
-                  disabled={disabled} autoFocus={index === 0}
-                  data-index={index} key={index} tabIndex={index + 1}
-                  value={value !== null ? value[index] : null}>
-            <option value={null} key={-1}></option>
+      <div className="CompletableText">
+        {intercalateWith(this.textParts, index =>
+          <select
+            onChange={this.handleSelectChange}
+            disabled={disabled}
+            autoFocus={index === 0}
+            data-index={index}
+            key={index}
+            tabIndex={index + 1}
+            value={value !== null ? value[index] : null}>
+            <option value={null} key={-1} />
             {selectOptions}
           </select>
-        ))
-      }
+        )}
       </div>
     );
   }
 
-  handleSelectChange (event: SyntheticInputEvent) {
+  handleSelectChange(event: SyntheticInputEvent) {
     const {onChange, value} = this.props;
     const index: number = Number(event.target.getAttribute('data-index'));
     onChange({...value, [index]: Number(event.target.value)});

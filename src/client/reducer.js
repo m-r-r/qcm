@@ -1,5 +1,5 @@
 /* @flow */
-import type { State, Action } from './types';
+import type {State, Action} from './types';
 
 import {
   LOAD_EXERCISE,
@@ -8,10 +8,10 @@ import {
   START_EXERCISE,
   ANSWER_QUESTION,
   VALIDATE_ANSWER,
-  NEXT_QUESTION
+  NEXT_QUESTION,
 } from './constants';
 import * as actions from './actions';
-import { exerciseMaxScore } from '../core';
+import {exerciseMaxScore} from '../core';
 
 export const steps = {
   FAILURE: 'FAILURE',
@@ -32,7 +32,10 @@ export const INITIAL_STATE: State = {
   userScore: {},
 };
 
-export default function reducer (state: State = INITIAL_STATE, action: Action): State {
+export default function reducer(
+  state: State = INITIAL_STATE,
+  action: Action
+): State {
   const {type, payload} = action;
 
   switch (action.type) {
@@ -43,26 +46,24 @@ export default function reducer (state: State = INITIAL_STATE, action: Action): 
         error: null,
       };
 
-    case LOAD_EXERCISE_SUCCESS:
-      {
-        const {exercise: {metadata, questions}} = action.payload;
-        return {
-          ...state,
-          step: steps.READY,
-          error: null,
-          metadata,
-          questions,
-        };
-      }
-    case LOAD_EXERCISE_FAILURE:
-      {
-        const {error} = action.payload;
-        return {
-          ...state,
-          step: steps.FAILURE,
-          error,
-        };
-      }
+    case LOAD_EXERCISE_SUCCESS: {
+      const {exercise: {metadata, questions}} = action.payload;
+      return {
+        ...state,
+        step: steps.READY,
+        error: null,
+        metadata,
+        questions,
+      };
+    }
+    case LOAD_EXERCISE_FAILURE: {
+      const {error} = action.payload;
+      return {
+        ...state,
+        step: steps.FAILURE,
+        error,
+      };
+    }
 
     case START_EXERCISE:
       if (state.step !== steps.READY && state.step !== steps.FINISHED) {
@@ -79,63 +80,61 @@ export default function reducer (state: State = INITIAL_STATE, action: Action): 
         },
       };
 
-    case ANSWER_QUESTION:
-      {
-        if (state.step !== steps.INPUT) {
-          return state;
-        }
-        const {answer} = action.payload;
-        const {currentQuestionIndex} = state;
+    case ANSWER_QUESTION: {
+      if (state.step !== steps.INPUT) {
+        return state;
+      }
+      const {answer} = action.payload;
+      const {currentQuestionIndex} = state;
+      return {
+        ...state,
+        userAnswers: {
+          ...state.userAnswers,
+          [Number(currentQuestionIndex)]: answer,
+        },
+      };
+    }
+
+    case VALIDATE_ANSWER: {
+      if (state.step !== steps.INPUT) {
+        return state;
+      }
+      const {score} = action.payload;
+      const {currentQuestionIndex, userScore} = state;
+      const total = userScore.total + score;
+      return {
+        ...state,
+        step: steps.SOLUTION,
+        userScore: {
+          ...userScore,
+          [Number(currentQuestionIndex)]: score,
+          total,
+        },
+      };
+    }
+
+    case NEXT_QUESTION: {
+      const {questions, currentQuestionIndex} = state;
+      if (state.step !== steps.SOLUTION) {
+        return state;
+      }
+      const isLastQuestion =
+        state.currentQuestionIndex === questions.length - 1;
+
+      if (isLastQuestion) {
         return {
           ...state,
-          userAnswers: {
-            ...state.userAnswers,
-            [Number(currentQuestionIndex)]: answer,
-          },
+          step: steps.FINISHED,
+          currentQuestionIndex: null,
         };
-      }
-
-    case VALIDATE_ANSWER:
-      {
-        if (state.step !== steps.INPUT) {
-          return state;
-        }
-        const {score} = action.payload;
-        const {currentQuestionIndex, userScore} = state;
-        const total = userScore.total + score;
+      } else {
         return {
           ...state,
-          step: steps.SOLUTION,
-          userScore: {
-            ...userScore,
-            [Number(currentQuestionIndex)]: score,
-            total,
-          },
+          step: steps.INPUT,
+          currentQuestionIndex: currentQuestionIndex + 1,
         };
       }
-
-    case NEXT_QUESTION:
-      {
-        const {questions, currentQuestionIndex} = state;
-        if (state.step !== steps.SOLUTION) {
-          return state;
-        }
-        const isLastQuestion = state.currentQuestionIndex === questions.length - 1;
-
-        if (isLastQuestion) {
-          return {
-            ...state,
-            step: steps.FINISHED,
-            currentQuestionIndex: null,
-          };
-        } else {
-          return {
-            ...state,
-            step: steps.INPUT,
-            currentQuestionIndex: currentQuestionIndex + 1,
-          };
-        }
-      }
+    }
 
     default:
       return state;
