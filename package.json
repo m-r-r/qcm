@@ -44,6 +44,7 @@
     "json-loader": "^0.5.4",
     "node-sass": "^4.5.3",
     "normalize.css": "^3.0.3",
+    "prettier": "^1.4.4",
     "react-hot-loader": "beta",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
