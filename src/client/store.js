@@ -1,18 +1,18 @@
 /* @flow */
-import type {State} from './types';
-import createSagaMiddleware from 'redux-saga';
+import type {State, Action} from './types';
+import type {Store} from 'redux';
 import {applyMiddleware, createStore} from 'redux';
 import rootReducer from './reducer';
-import rootSaga from './sagas';
+import middleware from './middleware';
 
-export function configureStore(initialState?: State) {
-  const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(
-    rootReducer,
-    initialState,
-    applyMiddleware(sagaMiddleware)
-  );
-  sagaMiddleware.run(rootSaga, store.getState);
+export function configureStore(initialState?: State): Store<State, Action> {
+  let middlewares = applyMiddleware(middleware);
+  if (typeof window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ === 'function') {
+    middlewares = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(middlewares);
+  }
+
+  // $FlowFixMe
+  const store = createStore(rootReducer, initialState, middlewares);
 
   if (module.hot) {
     // $FlowFixMe

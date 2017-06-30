@@ -13,7 +13,7 @@ export const validateExerciseObject = (json: Object): boolean => {
   return result;
 };
 
-export function validateAnswer(
+export function isCorrectAnswer(
   question: Question,
   answer: Answer
 ): boolean | Error {
