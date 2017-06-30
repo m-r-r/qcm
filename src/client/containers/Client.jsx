@@ -109,7 +109,7 @@ class Client extends Component {
           <EndScreen
             metadata={metadata}
             score={total / max}
-            scale={metadata.grading_scale || max}
+            scale={metadata.gradingScale || max}
           />
         );
 

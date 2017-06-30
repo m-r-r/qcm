@@ -114,7 +114,7 @@
 				"explainations": {
 					"$ref": "#/definitions/notEmptyString"
 				},
-				"grading_scale": {
+				"gradingScale": {
 					"oneOf": [{
 						"$ref": "#/definitions/positiveNumber"
 					}, {

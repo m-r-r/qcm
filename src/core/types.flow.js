@@ -24,7 +24,7 @@ export type Exercise = {
     title?: string,
     instructions?: string,
     explainations?: string,
-    grading_scale?: number | '%',
+    gradingScale?: number | '%',
   },
   questions: Question[],
 };
