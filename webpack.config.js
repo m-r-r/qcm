@@ -14,6 +14,7 @@ const config = {
   context: SRC_DIR,
   entry: {
     client: ['./client/style.scss', './client/main.js'],
+    editor: ['./editor/main'],
     example: ['file-loader?name=[name].[ext]?v=[hash]!./example.json'],
   },
 
@@ -114,6 +115,16 @@ const config = {
         collapseWhitespace: true,
       },
       chunks: ['client'],
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      filename: 'editor.html',
+      template: 'editor.html',
+      inject: 'body',
+      minify: {
+        collapseWhitespace: true,
+      },
+      chunks: ['editor'],
     }),
     new ExtractTextPlugin('[name].css'),
   ],

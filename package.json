@@ -10,6 +10,7 @@
   "scripts": {
     "flow-typed": "jq -a -r '.dependencies |  to_entries | map(.key + \"@\" + .value) | @sh' package.json | xargs flow-typed install --overwrite",
     "watch:c9": "webpack-dev-server --host $IP --port $PORT --public $C9_HOSTNAME",
+    "watch": "webpack-dev-server",
     "build": "env NODE_ENVIRONMENT=production webpack -p"
   },
   "author": "Mickaël RAYBAUD-ROIG <mrr@ctrlaltbksp.eu>",
