@@ -6,14 +6,17 @@ import {
   SAVE_EXERCISE_SUCCESS,
   SAVE_EXERCISE_FAILURE,
   UPDATE_EXERCISE_METADATA,
+  ADD_QUESTION,
+  REMOVE_QUESTION,
 } from '../constants';
+import questionsReducer from './questions';
 
-const INITIAL_STATE: State = {
+export const INITIAL_STATE: State = {
   isSaving: false,
   saveError: null,
   url: null,
   metadata: {},
-  questions: [],
+  questions: questionsReducer(undefined, ({}: any)),
 };
 
 export default function rootReducer(
@@ -26,31 +29,34 @@ export default function rootReducer(
       return {
         ...state,
         metadata: exercise.metadata,
-        questions: exercise.questions,
+        questions: questionsReducer(state.questions, action),
         url,
       };
     }
 
-    case SAVE_EXERCISE:
+    case SAVE_EXERCISE: {
       return {
         ...state,
         isSaving: true,
         saveError: null,
       };
+    }
 
-    case SAVE_EXERCISE_SUCCESS:
+    case SAVE_EXERCISE_SUCCESS: {
       return {
         ...state,
         isSaving: false,
         saveError: null,
       };
+    }
 
-    case (SAVE_EXERCISE_FAILURE: 'SAVE_EXERCISE_FAILURE'):
+    case (SAVE_EXERCISE_FAILURE: 'SAVE_EXERCISE_FAILURE'): {
       return {
         ...state,
         isSaving: false,
         saveError: action.payload.errorCode,
       };
+    }
 
     case UPDATE_EXERCISE_METADATA: {
       return {
@@ -60,9 +66,18 @@ export default function rootReducer(
           ...action.payload,
         },
       };
-    };
+    }
 
-    default:
+    case ADD_QUESTION:
+    case REMOVE_QUESTION: {
+      return {
+        ...state,
+        questions: questionsReducer(state.questions, action),
+      };
+    }
+
+    default: {
       return state;
+    }
   }
 }

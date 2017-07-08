@@ -14,10 +14,12 @@ export type Question =
   | {
       type: 'completable-text',
       options: string[],
-      solution: {[pos: number]: number | null},
+      solution: {[pos: string]: number | null},
     };
 
-export type Answer = number | number[] | {[pos: number]: number | null};
+export type QuestionType = $PropertyType<Question, 'type'>;
+
+export type Answer = number | number[] | {[pos: string]: number | null};
 
 export type Exercise = {
   metadata?: {

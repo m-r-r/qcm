@@ -6,6 +6,8 @@ import createStore from './store/createStore';
 import {loadExercise} from './actions';
 import Main from './containers/Main';
 import {Provider} from 'react-redux';
+// $FlowFixMe
+import {MuiThemeProvider} from 'material-ui/styles';
 import {render} from 'react-dom';
 
 window.QCM = {
@@ -16,9 +18,11 @@ window.QCM = {
       this.store.dispatch(loadExercise(exercise, url));
     }
     render(
-      <Provider store={this.store}>
-        <Main />
-      </Provider>,
+      <MuiThemeProvider>
+        <Provider store={this.store}>
+          <Main />
+        </Provider>
+      </MuiThemeProvider>,
       element
     );
   },

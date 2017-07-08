@@ -1,11 +1,19 @@
 /* @flow */
-import type {Action, Exercise, ErrorCode, MetadataFields} from './types';
+import type {
+  Action,
+  Exercise,
+  ErrorCode,
+  MetadataFields,
+  QuestionType,
+} from './types';
 import {
   LOAD_EXERCISE,
   SAVE_EXERCISE,
   SAVE_EXERCISE_SUCCESS,
   SAVE_EXERCISE_FAILURE,
   UPDATE_EXERCISE_METADATA,
+  ADD_QUESTION,
+  REMOVE_QUESTION,
 } from './constants';
 import {getErrorCode} from './errors';
 
@@ -36,6 +44,20 @@ export const saveExerciseFailure = (error: Error): Action => ({
 });
 
 export const updateExerciseMetadata = (metadata: MetadataFields): Action => ({
-  type: (UPDATE_EXERCISE_METADATA: 'UPDATE_EXERCISE_METADATA'), 
+  type: (UPDATE_EXERCISE_METADATA: 'UPDATE_EXERCISE_METADATA'),
   payload: metadata,
+});
+
+export const addQuestion = (type: QuestionType): Action => ({
+  type: (ADD_QUESTION: 'ADD_QUESTION'),
+  payload: {
+    type,
+  },
+});
+
+export const removeQuestion = (id: string): Action => ({
+  type: (REMOVE_QUESTION: 'REMOVE_QUESTION'),
+  payload: {
+    questionId: id,
+  },
 });

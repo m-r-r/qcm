@@ -10,7 +10,7 @@ import {bindActionCreators} from 'redux';
 type Props = {
   isReadOnly: boolean,
   metadata: MetadataFields,
-  updateExerciseMetadata: $Type<updateExerciseMetadata>,
+  updateExerciseMetadata: (fields: MetadataFields) => any,
 };
 
 class MetadataForm extends Component {
@@ -18,29 +18,48 @@ class MetadataForm extends Component {
 
   handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
-  };
+  }
 
   handleChange = (event: SyntheticInputEvent) => {
     const input = event.target;
-    let {name, value} = input;
+    let value: number | string | null = null;
 
-    if (typeof name !== 'string') {
+    if (typeof input.name !== 'string') {
       return;
     }
 
-    if (typeof value !== 'string' || value.length === 0) {
-      value = null;
+    switch (input.name) {
+      case 'gradingScale': {
+        // The grading scale can be either an integer or the string "%"
+        if (input.value === '%') {
+          value = input.value;
+        } else {
+          const intValue = parseInt(input.value);
+          // The grading scale can't be 0 or NaN :
+          if (intValue > 0 && !Number.isNaN(intValue)) {
+            value = intValue;
+          }
+        }
+        break;
+      }
+
+      default: {
+        // Others fields are string fields :
+        if (typeof input.value === 'string' && input.value.length > 0) {
+          value = input.value;
+        }
+        break;
+      }
     }
-    this.props.updateExerciseMetadata({[name]: value});
-  }
+    this.props.updateExerciseMetadata({[input.name]: value});
+  };
 
   render() {
     const {title, instructions, explainations} = this.props.metadata || {};
     return (
-      <form onSubmit={this.handleSubmit}
-            onChange={this.handleChange}>
+      <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
         <div>
-          <label for="title">Titre</label>
+          <label htmlFor="title">Titre</label>
           <input
             id="title"
             name="title"
@@ -49,7 +68,7 @@ class MetadataForm extends Component {
           />
         </div>
         <div>
-          <label for="instructions">Instructions</label>
+          <label htmlFor="instructions">Instructions</label>
           <textarea
             id="instructions"
             name="instructions"
@@ -58,13 +77,23 @@ class MetadataForm extends Component {
           />
         </div>
         <div>
-          <label for="explainations">Explainations</label>
+          <label htmlFor="explainations">Explainations</label>
           <textarea
             id="explainations"
             name="explainations"
             value={undefined}
             defaultValue={explainations}
           />
+        </div>
+        <div>
+          <label htmlFor="gradingScale">Échelle de notation</label>
+          <select id="gradingScale" name="gradingScale">
+            <option value="">Pas d'échelle</option>
+            <option value={10}>Noter sur 5 points</option>
+            <option value={10}>Noter sur 10 points</option>
+            <option value={20}>Noter sur 20 points</option>
+            <option value="%">Noter en pourcentages</option>
+          </select>
         </div>
       </form>
     );
