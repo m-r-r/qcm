@@ -24,6 +24,8 @@
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "redux": "^3.7.0",
+    "remarkable": "^1.7.1",
+    "remarkable-react": "^0.2.0",
     "reselect": "^3.0.1",
     "tv4": "^1.2.7"
   },
