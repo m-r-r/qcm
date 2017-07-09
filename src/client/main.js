@@ -21,6 +21,19 @@ window.addEventListener('load', () => {
         </Provider>,
         element
       );
+
+      if (module.hot) {
+        // $FlowFixMe
+        module.hot.accept('./containers/Client', () => {
+          const NextClient = require('./containers/Client').default;
+          ReactDOM.render(
+            <Provider store={store}>
+              <Client uri={uri} />
+            </Provider>,
+            element
+          );
+        });
+      }
     } catch (err) {
       console && console.debug(err);
     }

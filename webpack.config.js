@@ -120,6 +120,7 @@ const config = {
 };
 
 if (DEV) {
+  config.entry.client.unshift('react-hot-loader/patch');
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
