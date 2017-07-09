@@ -50,6 +50,7 @@ export default class Markup extends PureComponent {
       this._renderer = new RemarkableReact({
         components: {
           [PLACEHOLDER_TAG]: this.props.placeholderComponent || 'span',
+          a: renderLink,
         },
         tokens: {
           [PLACEHOLDER_TAG]: PLACEHOLDER_TAG,
@@ -61,6 +62,22 @@ export default class Markup extends PureComponent {
 
   render() {
     const {value, tagName, placeholderComponent, inline, ...props} = this.props;
-    return createElement(tagName, props, this.renderer.render(this.tokens));
+    return createElement(
+      tagName,
+      props,
+      // $FlowFixMe
+      this.renderer.render(this.tokens, this.parser.options)
+    );
   }
 }
+
+const renderLink = ({options, href, title, children}) => {
+  const props: Object = {
+    href,
+    title,
+  };
+  if (options.linkTarget) {
+    props.target = options.linkTarget;
+  }
+  return createElement('a', props, children);
+};
