@@ -1,5 +1,6 @@
 /* @flow */
 import React, {Component} from 'react';
+import Markup from '../../core/components/Markup';
 
 import {newId} from '../../utils';
 
@@ -31,7 +32,7 @@ export default class SingleChoice extends Component {
 
     return (
       <div className="SingleChoice">
-        <p className="SingleChoice__text">{text}</p>
+        <Markup className="SingleChoice__text" value={text} />
         <ul className="SingleChoice__choices">
           {options.map((option, index) => {
             const id = this.radiosName + '-' + index;
@@ -49,7 +50,7 @@ export default class SingleChoice extends Component {
                   disabled={disabled}
                   onChange={this.handleCheckboxChange.bind(this, index)}
                 />
-                <label htmlFor={id}>{option}</label>
+                <Markup inline tagName="label" value={option} htmlFor={id} />
               </li>
             );
           })}

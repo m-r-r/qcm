@@ -53,7 +53,7 @@ export const placeholderPlugin = (md: Remarkable) => {
           .slice(contentStart, contentStop)
           .replace(/[\s\n]+/g, ' ')
           .trim(),
-        level: level + 1,
+        level: level,
       });
     }
     state.pos = pos;
@@ -63,9 +63,7 @@ export const placeholderPlugin = (md: Remarkable) => {
   md.inline.ruler.after('escape', PLACEHOLDER_TAG, parseInlinePlaceholders);
 };
 
-export function createParser(
-  options: Object = {}
-): Remarkable {
+export function createParser(options: Object = {}): Remarkable {
   // $FlowFixMe
   return new Remarkable('default', {
     html: false,
@@ -78,5 +76,5 @@ export function createParser(
 export type Token = {
   +type: string,
   +level: number,
-  +children?: Token[];
-}
+  +children?: Token[],
+};

@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react';
+import Markup from '../../core/components/Markup';
 
 export type Props = {question: Object};
 
@@ -8,7 +9,7 @@ export default function SingleChoiceSolution(props: Props) {
   const {options, solution} = question;
   return (
     <div className="Solution Solution--single-choice">
-      <p>{options[solution]}</p>
+      <Markup inline tagName="p" value={options[solution]} />
     </div>
   );
 }

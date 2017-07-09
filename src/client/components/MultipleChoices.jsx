@@ -1,5 +1,6 @@
 /* @flow */
 import React, {Component} from 'react';
+import Markup from '../../core/components/Markup';
 
 import {newId} from '../../utils';
 
@@ -52,7 +53,7 @@ export default class MultipleChoice extends Component {
 
     return (
       <div className="MultipleChoices">
-        <p className="MultipleChoices__text">{text}</p>
+        <Markup className="MultipleChoices__text" value={text} />
         <ul className="MultipleChoices__choices">
           {options.map((option, index) => {
             const id = this.id + '-' + index;
@@ -69,7 +70,7 @@ export default class MultipleChoice extends Component {
                   disabled={disabled}
                   onChange={this.handleCheckboxChange}
                 />
-                <label htmlFor={id}>{option}</label>
+                <Markup inline tagName="label" value={option} htmlFor={id} />
               </li>
             );
           })}

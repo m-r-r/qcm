@@ -47,7 +47,14 @@ export default class Markup extends PureComponent {
 
   get renderer(): RemarkableReact {
     if (!this._renderer) {
-      this._renderer = new RemarkableReact();
+      this._renderer = new RemarkableReact({
+        components: {
+          [PLACEHOLDER_TAG]: this.props.placeholderComponent || 'span',
+        },
+        tokens: {
+          [PLACEHOLDER_TAG]: PLACEHOLDER_TAG,
+        },
+      });
     }
     return this._renderer;
   }

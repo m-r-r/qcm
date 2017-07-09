@@ -1,7 +1,6 @@
 /* @flow */
 import React, {Component} from 'react';
-
-import {intercalateWith, splitText} from '../../utils';
+import Markup from '../../core/components/Markup';
 
 type Props = {
   text: string,
@@ -13,7 +12,7 @@ type Props = {
 
 export default class CompletableText extends Component {
   props: Props;
-  textPartsCache: ?Array<string>;
+  selectIndex: number = 0;
 
   static defaultProps = {
     disabled: false,
@@ -23,40 +22,40 @@ export default class CompletableText extends Component {
 
   handleSelectChange = this.handleSelectChange.bind(this);
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.text !== nextProps.text) {
-      this.textPartsCache = null;
-    }
+  componentWillUpdate() {
+    this.selectIndex = 0;
   }
 
-  get textParts(): string[] {
+  renderSelect = () => {
+    const {options, value, disabled} = this.props;
+    const index = this.selectIndex++;
     return (
-      this.textPartsCache || (this.textPartsCache = splitText(this.props.text))
+      <select
+        onChange={this.handleSelectChange}
+        disabled={disabled}
+        autoFocus={index === 0}
+        data-index={index}
+        tabIndex={index + 1}
+        value={value !== null ? value[index] : ''}>
+
+        <option value={null} key={-1} />
+        {options.map((opt, index) =>
+          <option value={index} key={index}>{opt}</option>
+        )}
+      </select>
     );
-  }
+  };
 
   render() {
-    const {options, value, disabled} = this.props;
-
-    const selectOptions = options.map((opt, index) =>
-      <option value={index} key={index}>{opt}</option>
-    );
-
+    const {text, value} = this.props;
     return (
       <div className="CompletableText">
-        {intercalateWith(this.textParts, index =>
-          <select
-            onChange={this.handleSelectChange}
-            disabled={disabled}
-            autoFocus={index === 0}
-            data-index={index}
-            key={index}
-            tabIndex={index + 1}
-            value={value !== null ? value[index] : null}>
-            <option value={null} key={-1} />
-            {selectOptions}
-          </select>
-        )}
+        <Markup placeholderComponent={this.renderSelect} value={text}>
+          {
+            // Force the component to update when the value change
+            value
+          }
+        </Markup>
       </div>
     );
   }

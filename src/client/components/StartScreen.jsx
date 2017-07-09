@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-
+import Markup from '../../core/components/Markup';
 export type Props = {metadata: Object};
 
 export default function StartScreen(props: Props) {
@@ -8,7 +8,10 @@ export default function StartScreen(props: Props) {
   return (
     <div className="StartScreen">
       <h1 className="StartScreen__title">{metadata.title}</h1>
-      <p className="StartScreen__instructions">{metadata.instructions}</p>
+      <Markup
+        className="StartScreen__instructions"
+        value={metadata.instructions}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@
   "$schema": "http://ctrlaltbksp.eu/questionnaire/schema-01.json",
   "metadata": {
     "title": "Exercice de test",
-    "instructions": "Avant de répondre aux questions, réfléchissez bien !",
+    "instructions": "Avant de répondre aux questions, *réfléchissez bien* !",
     "gradingScale": 20
   },
   "questions": [
@@ -31,7 +31,7 @@
     },
     {
       "type": "completable-text",
-      "text": "Il y a un % qui manque dans % phrase.",
+      "text": "Il y a un {{mot}} qui manque dans {{cette}} phrase.",
       "coefficient": 2.0,
       "options": [
         "ces", "cette", "lettre", "mot"

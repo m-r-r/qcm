@@ -1,5 +1,6 @@
 /* @flow */
 import React from 'react';
+import Markup from '../../core/components/Markup';
 
 export type Props = {question: Object};
 
@@ -12,7 +13,9 @@ export default function MultipleChoicesSolution(props: Props) {
   return (
     <div className="Solution Solution--multiple-choices">
       <ul>
-        {rightOptions.map((text, index) => <li key={index}>{text}</li>)}
+        {rightOptions.map((text, index) =>
+          <Markup key={index} inline tagName="li" value={text} />
+        )}
       </ul>
     </div>
   );

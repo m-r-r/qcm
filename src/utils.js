@@ -49,19 +49,6 @@ export function propertiesEqual(a: Object, b: Object): boolean {
   return true;
 }
 
-const SPLIT_TEXT_REGEX = /%%?/gm;
-
-function replacePlaceholder(text: string): string {
-  return text === '%%' ? '%' : '￼';
-}
-
-export function splitText(text: string): string[] {
-  return text
-    .replace('￼', '')
-    .replace(SPLIT_TEXT_REGEX, replacePlaceholder)
-    .split('￼');
-}
-
 export function round10(number: number, precision: number): number {
   const m = Math.pow(10, Math.abs(+precision));
   return Math.round((+number + 1e-15) * m) / m;
