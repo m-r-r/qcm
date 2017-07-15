@@ -1,23 +1,29 @@
 /* @flow */
 
-export type Question =
-  | {
-      type: 'single-choice',
-      options: string[],
-      solution: number,
-    }
-  | {
-      type: 'multiple-choices',
-      options: string[],
-      solution: number[],
-    }
-  | {
-      type: 'completable-text',
-      options: string[],
-      solution: {[pos: number]: number | null},
-    };
+type RichText = string;
+export type OptionId = string | number;
 
-export type Answer = number | number[] | {[pos: number]: number | null};
+export type Option = {
+  id: OptionId,
+  text: RichText,
+};
+
+export type ChoicesQuestion = {
+  type: 'choices',
+  text: RichText,
+  options: Option[],
+  solution: OptionId | OptionId[],
+};
+
+export type CompleteTextQuestion = {
+  type: 'completable-text',
+  text: RichText,
+};
+
+export type Question = ChoicesQuestion | CompleteTextQuestion;
+
+export type Solution = OptionId | OptionId[] | Array<?OptionId>;
+export type Answer = Solution;
 
 export type Exercise = {
   metadata?: {

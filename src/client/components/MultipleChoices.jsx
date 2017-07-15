@@ -1,20 +1,28 @@
 /* @flow */
 import React, {Component} from 'react';
 import Markup from '../../core/components/Markup';
-
+import type {Option, OptionId} from '../types';
 import {newId} from '../../utils';
 
 type Props = {
   text: string,
   options: string[],
-  value: number[],
+  value: OptionId[] | OptionId,
   disabled: boolean,
   onChange: Function,
-};
+} & ({
+  | isMultiple: true, 
+    value: ?Array<OptionId>
+  
+  } | {
+    isMltiple: false, 
+    value: ?OptionId,
+    
+  });
 
 type State = {
   checked: {
-    [option: number]: boolean,
+    [option: OptionId]: boolean,
   },
 };
 
@@ -26,24 +34,26 @@ export default class MultipleChoice extends Component {
   };
 
   props: Props;
-  state: State;
+  state: State = {
+    checked: {},
+  };
 
-  id: string = newId('choice');
+  id: string = newId(this.constructor.name);
 
   handleCheckboxChange = this.handleCheckboxChange.bind(this);
-
-  constructor(props: $Shape<Props>, context: Object) {
-    super(props, context);
-
-    const {value, options} = this.props;
-    this.state = {
-      checked: checkedIndexes(value, options),
-    };
-  }
 
   componentWillReceiveProps(props: Props) {
     if (props.value !== this.props.value) {
       this.setState({checked: checkedIndexes(props.value, props.options)});
+    }
+  }
+  
+  isChecked(id: OptionId) {
+    const {value} = this.props;
+    if (Array.isArray(value)) {
+      return value.indexOf(id) !== -1;
+    } else {
+      return value === id;
     }
   }
 
@@ -55,22 +65,21 @@ export default class MultipleChoice extends Component {
       <div className="MultipleChoices">
         <Markup className="MultipleChoices__text" value={text} />
         <ul className="MultipleChoices__choices">
-          {options.map((option, index) => {
-            const id = this.id + '-' + index;
+          {options.map(({id, text}, index) => {
+            const htmlId = `${this.id}-${id}`;
             return (
-              <li key={index} className="MultipleChoices__choice">
+              <li key={htmlId} className="MultipleChoices__choice">
                 <input
                   type="checkbox"
                   className="MultipleChoices__checkbox"
-                  checked={!!checked[index]}
+                  checked={this.isChecked(id)}
                   autoFocus={index === 0}
-                  data-index={index}
-                  tabIndex={index + 1}
-                  id={id}
+                  data-id={id}
+                  id={htmlId}
                   disabled={disabled}
                   onChange={this.handleCheckboxChange}
                 />
-                <Markup inline tagName="label" value={option} htmlFor={id} />
+                <Markup inline tagName="label" value={option} htmlFor={htmlId} />
               </li>
             );
           })}
@@ -82,12 +91,11 @@ export default class MultipleChoice extends Component {
   handleCheckboxChange(event: SyntheticInputEvent) {
     const {onChange} = this.props;
     let {checked} = this.state;
-    const index: number = Number(event.target.getAttribute('data-index'));
+    const {id} = event.target;
 
-    checked = {
-      ...checked,
-      [index]: !checked[index],
-    };
+    if (this.isChecked(id)) {
+      
+    }
 
     this.setState({checked});
     onChange(Object.keys(checked).map(Number).filter(key => checked[key]));

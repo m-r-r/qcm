@@ -53,3 +53,10 @@ export function round10(number: number, precision: number): number {
   const m = Math.pow(10, Math.abs(+precision));
   return Math.round((+number + 1e-15) * m) / m;
 }
+
+export function areArraysEqual<T>(actual: T[], expected: T[]): boolean {
+  return (
+    actual.length === expected.length &&
+    actual.every((value, index) => value === expected[index])
+  );
+}

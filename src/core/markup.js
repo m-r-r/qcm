@@ -78,3 +78,14 @@ export type Token = {
   +level: number,
   +children?: Token[],
 };
+
+export function extractPlaceholders(markup: string): string[] {
+  const matches = markup.match(/{{\s*([^}])*\s*}}/g);
+  if (!matches) {
+    return [];
+  }
+
+  return matches.map(result => {
+    return result.replace(/[{}]+/g, '').trim();
+  });
+}

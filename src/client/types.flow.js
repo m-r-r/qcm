@@ -1,6 +1,14 @@
 /* @flow */
 
-import type {Exercise, Question, Answer} from '../core/types';
+import type {
+  Exercise,
+  Question,
+  ChoiceQuestion,
+  CompleteTextQuestion,
+  Option,
+  OptionId,
+  Answer,
+} from '../core/types';
 export type {Exercise, Question, Answer};
 
 export type Action =
@@ -13,7 +21,23 @@ export type Action =
   | {type: 'VALIDATE_ANSWER', +payload: {|+score: number|}}
   | {type: 'NEXT_QUESTION', +payload: {||}};
 
-type Step = 'FAILURE' | 'LOADING' | 'READY' | 'INPUT' | 'SOLUTION' | 'FINISHED';
+export type ChoicesQuestionState = ChoicesQuestion &
+  (
+    | {
+        solution: number,
+        isMultiple: false,
+      }
+    | {
+        solution: number[],
+        isMultiple: true,
+      });
+
+export type CompleteTextQuestionState = CompleteTextState & {
+  solution: Array<string | null>,
+  options: Option[],
+};
+
+export type QuestionState = ChoicesQuestionState | CompleteTextQuestionState;
 
 export type State = {
   step: 'LOADING' | 'FAILURE' | 'READY' | 'INPUT' | 'SOLUTION' | 'FINISHED',
