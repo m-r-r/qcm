@@ -9,7 +9,7 @@ import type {
   OptionId,
   Answer,
 } from '../core/types';
-export type {Exercise, Question, Answer};
+export type {Answer};
 
 export type Action =
   | {type: 'LOAD_EXERCISE', +payload: {|+uri: string|}}
@@ -21,6 +21,28 @@ export type Action =
   | {type: 'VALIDATE_ANSWER', +payload: {|+score: number|}}
   | {type: 'NEXT_QUESTION', +payload: {||}};
 
+
+export type Choice = {
+  id: OptionId,
+  isCorrect: boolean,
+  text: RichText,
+};
+
+export type ChoicesQuestion = {
+  type: 'choices',
+  text: RichText,
+  choices: Choice[],
+};
+
+export type CompleteTextQuestion = {
+  type: 'completable-text',
+  text: RichText,
+  options: Array<{
+    id: number,
+    text: RichText,
+    position: number,
+  }>
+};
 export type ChoicesQuestionState = ChoicesQuestion &
   (
     | {

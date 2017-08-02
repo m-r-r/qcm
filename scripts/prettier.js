@@ -54,6 +54,9 @@ function prettify(modifiedOnly = true) {
     .map(f => path.join(projectDir, f));
 
   files.forEach(filePath => {
+    if (!fs.existsSync(filePath)) {
+      return;
+    }
     const inputStr = fs.readFileSync(filePath, 'utf8');
     console.log(`Formatting ${filePath}...`);
     try {
