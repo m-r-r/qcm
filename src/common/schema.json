@@ -28,7 +28,7 @@
             "coefficient":{
               "$ref":"#/definitions/positiveNumber"
             },
-            "explainations":{
+            "explanations":{
               "$ref":"#/definitions/notEmptyString"
             }
           }
@@ -77,7 +77,7 @@
               "properties":{
                 "type":{
                   "enum":[
-                    "completable-text"
+                    "complete-text"
                   ]
                 }
               }
@@ -102,7 +102,7 @@
         "instructions":{
           "$ref":"#/definitions/notEmptyString"
         },
-        "explainations":{
+        "explanations":{
           "$ref":"#/definitions/notEmptyString"
         },
         "gradingScale":{

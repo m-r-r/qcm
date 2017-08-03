@@ -1,6 +1,6 @@
 /* @flow */
 import React, {Component} from 'react';
-import Markup from '../../core/components/Markup';
+import Markup from '../../common/components/Markup';
 import type {Option, OptionId} from '../types';
 import {newId} from '../../utils';
 

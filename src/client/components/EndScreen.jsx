@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-import Markup from '../../core/components/Markup';
+import Markup from '../../common/components/Markup';
 import {round10} from '../../utils';
 
 export type Props = {
@@ -16,10 +16,10 @@ export default function EndScreen(props: Props) {
   return (
     <div className="EndScreen">
       <h2>Terminé !</h2>
-      {metadata.explainations &&
+      {metadata.explanations &&
         <Markup
-          className="EndScreen__explainations"
-          value={metadata.explainations}
+          className="EndScreen__explanations"
+          value={metadata.explanations}
         />}
       <p>
         Votre score :

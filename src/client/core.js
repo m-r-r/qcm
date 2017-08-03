@@ -7,7 +7,7 @@ import {
   toArray,
   areArraysEqual,
 } from '../utils';
-import {extractPlaceholders} from '../core/markup';
+import {extractPlaceholders} from '../common/markup';
 
 export function isCorrectAnswer(
   question: QuestionState,
@@ -22,7 +22,7 @@ export function isCorrectAnswer(
       } else {
         return answer === question.solution;
       }
-    case 'completable-text':
+    case 'complete-text':
       const {options, solution} = question;
       return Array.isArray(answer) && areArraysEqual(answer, question.solution);
     default:

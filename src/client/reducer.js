@@ -11,7 +11,7 @@ import {
   NEXT_QUESTION,
 } from './constants';
 import * as actions from './actions';
-import {exerciseMaxScore} from '../core';
+import {exerciseMaxScore} from '../common';
 
 export const steps = {
   FAILURE: 'FAILURE',

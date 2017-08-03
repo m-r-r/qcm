@@ -4,7 +4,7 @@ import {
   placeholderPlugin,
   createParser,
   PLACEHOLDER_TAG,
-} from '../../src/core/markup';
+} from '../../src/common/markup';
 
 test('commonmark parser', t => {
   const parser = createParser();

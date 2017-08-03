@@ -5,9 +5,9 @@ import {NetworkError, DecodeError} from './errors';
 import {currentQuestion} from './selectors';
 import {
   isCorrectAnswer,
-  validateExerciseObject,
+  validateSerializedExercise,
   questionCoefficient,
-} from '../core';
+} from '../common';
 import {
   loadExerciseSuccess,
   loadExerciseFailure,
@@ -45,11 +45,13 @@ async function loadExercise(
   try {
     let request = await fetch(uri);
     let json = await request.json();
-    if (validateExerciseObject(json)) {
+    if (validateSerializedExercise(json)) {
       next(loadExerciseSuccess(json));
     } else {
       next(
-        loadExerciseFailure(new DecodeError(uri, validateExerciseObject.errors))
+        loadExerciseFailure(
+          new DecodeError(uri, validateSerializedExercise.errors)
+        )
       );
     }
   } catch (err) {

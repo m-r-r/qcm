@@ -75,7 +75,7 @@ export function loadQuestion(question: Question): QuestionState {
         ...question,
         isMultiple: Array.isArray(question.solution),
       };
-    case 'completable-text':
+    case 'complete-text':
       return {
         ...question,
       };

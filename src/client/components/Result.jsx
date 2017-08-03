@@ -28,7 +28,7 @@ export default function Result(props: Props) {
           {React.createElement(component, {
             question,
           })}
-          <p>{question.explainations || false}</p>
+          <p>{question.explanations || false}</p>
         </div>}
     </div>
   );
@@ -40,7 +40,7 @@ const solutionComponent = question => {
       return SingleChoiceSolution;
     case 'multiple-choices':
       return MultipleChoicesSolution;
-    case 'completable-text':
+    case 'complete-text':
       return CompletableTextSolution;
     default:
       throw new Error('Invalid question type');

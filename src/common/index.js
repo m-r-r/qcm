@@ -7,9 +7,9 @@ import exerciseSchema from './schema.json';
 
 tv4.addSchema(exerciseSchema.id, exerciseSchema);
 
-export const validateExerciseObject = (json: Object): boolean => {
+export const validateSerializedExercise = (json: Object): boolean => {
   const result = tv4.validate(json, exerciseSchema);
-  validateExerciseObject.errors = tv4.error ? [tv4.error] : [];
+  validateSerializedExercise.errors = tv4.error ? [tv4.error] : [];
   return result;
 };
 
@@ -24,7 +24,7 @@ export function isCorrectAnswer(
       return (
         Array.isArray(answer) && arePermutations(answer, question.solution)
       );
-    case 'completable-text':
+    case 'complete-text':
       return (
         answer instanceof Object && propertiesEqual(answer, question.solution)
       );

@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-import Markup from '../../core/components/Markup';
+import Markup from '../../common/components/Markup';
 
 export type Props = {question: Object};
 

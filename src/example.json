@@ -30,7 +30,7 @@
       "solution": [1, 3]
     },
     {
-      "type": "completable-text",
+      "type": "complete-text",
       "text": "Il y a un {{mot}} qui manque dans {{cette}} phrase.",
       "coefficient": 2.0,
       "options": [

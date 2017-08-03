@@ -64,7 +64,7 @@ class Client extends Component {
         return SingleChoice;
       case 'multiple-choices':
         return MultipleChoices;
-      case 'completable-text':
+      case 'complete-text':
         return CompletableText;
       default:
         throw new Error('Invalid question type');
