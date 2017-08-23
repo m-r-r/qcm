@@ -8,14 +8,21 @@ import type {
 } from '../common/types';
 
 export type Action =
-  | {type: 'LOAD_EXERCISE', +payload: {|+uri: string|}}
-  | {type: 'LOAD_EXERCISE_SUCCESS', +payload: {|+exercise: SerializedExercise|}}
-  | {type: 'LOAD_EXERCISE_FAILURE', +error: true, +payload: {|+error: Error|}}
-  | {type: 'LOAD_EXERCISE_FAILURE', +error: true, +payload: {|+error: Error|}}
-  | {type: 'START_EXERCISE', +payload: {||}}
-  | {type: 'ANSWER_QUESTION', +payload: {|+answer: Object|}}
-  | {type: 'VALIDATE_ANSWER', +payload: {|+score: number|}}
-  | {type: 'NEXT_QUESTION', +payload: {||}};
+  | {type: 'LOAD_EXERCISE', +uri: string}
+  | {
+      type: 'LOAD_EXERCISE_SUCCESS',
+      +metadata: ExerciseMetadata,
+      +questions: QuestionState[],
+      +maxScore: number,
+    }
+  | {type: 'LOAD_EXERCISE_FAILURE', +error: true, +errorCode: string}
+  | {type: 'START_EXERCISE'}
+  | {type: 'SUBMIT_ANSWER', +answer: Answer}
+  | {type: 'NEXT_QUESTION'}
+  | {type: 'PREVIOUS_QUESTION'}
+  | {type: 'SHOW_ANSWERS'};
+
+export type ExerciseMetadata = $PropertyType<SerializedExercise, 'metadata'>;
 
 export type Choice = {
   id: ChoiceId,
@@ -25,12 +32,12 @@ export type Choice = {
 
 export type QuestionId = string;
 
-export type ChoicesState = {
+export type ChoicesState = {|
   +id: QuestionId,
   +type: 'choices',
   +text: RichText,
   +choices: Choice[],
-} & (
+|} & (
   | {
       +solution: ChoiceId,
       +isMultiple: false,
@@ -42,7 +49,7 @@ export type ChoicesState = {
       +userAnswer: ?(ChoiceId[]),
     });
 
-export type CompleteTextState = {
+export type CompleteTextState = {|
   +id: QuestionId,
   +type: 'complete-text',
   +text: RichText,
@@ -52,7 +59,7 @@ export type CompleteTextState = {
     position: number,
   }>,
   +userAnswer: ?Array<ChoiceId | null>,
-};
+|};
 
 export type QuestionState = ChoicesState | CompleteTextState;
 
@@ -60,47 +67,47 @@ export type Answer = ChoiceId | ChoiceId[] | Array<ChoiceId | null>;
 
 export type State =
   | {
-    // The exercise is loading
-    +isLoading: true,
-    +error: null,
-  }
+      status: 'loading',
+    }
   | {
-    // The exercise cannot be loaded
-    +isLoading: false,
-    +error: Error,
-  }
-  | ({
-    // The exercise is loaded
-    +isLoading: false,
-    +error: null,
-    +metadata: $PropertyType<SerializedExercise, 'metadata'>,
-    +questions: {[id: QuestionId]: QuestionState[]},
-    +userScore: {
-      total?: number,
-      max?: number,
-    },
-  } & (
-    | {
-        // The start screen is displayed to the user
-        +showAnswers: false,
-        +currentQuestionId: null,
-        +isFinished: false,
-      }
-    | {
-        // The current question is displayed to the user
-        +showAnswers: false,
-        +currentQuestionId: QuestionId,
-        +isFinished: false,
-      }
-    | {
-        // The user answered to all the questions
-        +showAnswers: false,
-        +currentQuestionId: null,
-        +isFinished: true,
-      }
-    | {
-        // The answers are displayed to the user
-        +showAnswers: true,
-        +currentQuestionId: QuestionId,
-        +isFinished: true,
-      }));
+      status: 'loadError',
+      error: string,
+    }
+  | {
+      status: 'ready',
+      metadata: ExerciseMetadata,
+      questions: QuestionState[],
+      score: {
+        max: number,
+        total: 0,
+      },
+    }
+  | {
+      status: 'askQuestion',
+      metadata: ExerciseMetadata,
+      questions: QuestionState[],
+      score: {
+        max: number,
+        total: number,
+      },
+      currentQuestionIndex: number,
+    }
+  | {
+      status: 'finished',
+      metadata: ExerciseMetadata,
+      questions: QuestionState[],
+      score: {
+        max: number,
+        total: number,
+      },
+    }
+  | {
+      status: 'showAnswer',
+      metadata: ExerciseMetadata,
+      questions: QuestionState[],
+      score: {
+        max: number,
+        total: number,
+      },
+      currentQuestionId: number,
+    };

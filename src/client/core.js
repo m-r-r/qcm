@@ -1,5 +1,3 @@
-/* @flow */
-
 import type {QuestionState} from './types';
 import {
   arePermutations,

@@ -1,10 +1,9 @@
-/* @flow */
 import {
   LOAD_EXERCISE,
   LOAD_EXERCISE_SUCCESS,
   LOAD_EXERCISE_FAILURE,
   START_EXERCISE,
-  ANSWER_QUESTION,
+  SUBMIT_ANSWER,
   VALIDATE_ANSWER,
   NEXT_QUESTION,
 } from './constants';
@@ -39,7 +38,7 @@ export const startExercise = (): Action => ({
 });
 
 export const answerQuestion = (answer: Object): Action => ({
-  type: ANSWER_QUESTION,
+  type: SUBMIT_ANSWER,
   payload: {
     answer,
   },

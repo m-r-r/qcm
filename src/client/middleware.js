@@ -13,7 +13,7 @@ import {
   loadExerciseFailure,
   validateAnswer,
 } from './actions';
-import {LOAD_EXERCISE, ANSWER_QUESTION} from './constants';
+import {LOAD_EXERCISE, SUBMIT_ANSWER} from './constants';
 
 export default (store: Api<State, Action>) => (next: Dispatch<Action>) => (
   action: Action
@@ -25,7 +25,7 @@ export default (store: Api<State, Action>) => (next: Dispatch<Action>) => (
       break;
     }
 
-    case ANSWER_QUESTION: {
+    case SUBMIT_ANSWER: {
       const {answer} = action.payload;
       const state = store.getState();
       const question = currentQuestion(state);

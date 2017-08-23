@@ -1,4 +1,3 @@
-/* @flow */
 import {steps} from './reducer';
 import type {State, Question, QuestionState, Option} from './types';
 import type {Solution, CompleteTextQuestion} from '../../core/types';

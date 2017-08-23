@@ -1,4 +1,3 @@
-/* @flow */
 import React, {Component} from 'react';
 import Markup from '../../common/components/Markup';
 import type {Option, OptionId} from '../types';
@@ -10,15 +9,15 @@ type Props = {
   value: OptionId[] | OptionId,
   disabled: boolean,
   onChange: Function,
-} & ({
-  | isMultiple: true, 
-    value: ?Array<OptionId>
-  
-  } | {
-    isMltiple: false, 
-    value: ?OptionId,
-    
-  });
+} & (
+  | {
+      isMultiple: true,
+      value: ?Array<OptionId>,
+    }
+  | {
+      isMltiple: false,
+      value: ?OptionId,
+    });
 
 type State = {
   checked: {
@@ -47,7 +46,7 @@ export default class MultipleChoice extends Component {
       this.setState({checked: checkedIndexes(props.value, props.options)});
     }
   }
-  
+
   isChecked(id: OptionId) {
     const {value} = this.props;
     if (Array.isArray(value)) {
@@ -79,7 +78,12 @@ export default class MultipleChoice extends Component {
                   disabled={disabled}
                   onChange={this.handleCheckboxChange}
                 />
-                <Markup inline tagName="label" value={option} htmlFor={htmlId} />
+                <Markup
+                  inline
+                  tagName="label"
+                  value={option}
+                  htmlFor={htmlId}
+                />
               </li>
             );
           })}
@@ -94,7 +98,6 @@ export default class MultipleChoice extends Component {
     const {id} = event.target;
 
     if (this.isChecked(id)) {
-      
     }
 
     this.setState({checked});

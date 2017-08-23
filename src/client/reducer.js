@@ -6,93 +6,69 @@ import {
   LOAD_EXERCISE_SUCCESS,
   LOAD_EXERCISE_FAILURE,
   START_EXERCISE,
-  ANSWER_QUESTION,
+  SUBMIT_ANSWER,
   VALIDATE_ANSWER,
   NEXT_QUESTION,
 } from './constants';
 import * as actions from './actions';
-import {exerciseMaxScore} from '../common';
-
-export const steps = {
-  FAILURE: 'FAILURE',
-  LOADING: 'LOADING',
-  READY: 'READY',
-  INPUT: 'INPUT',
-  SOLUTION: 'SOLUTION',
-  FINISHED: 'FINISHED',
-};
 
 export const INITIAL_STATE: State = {
-  step: steps.LOADING,
-  metadata: {},
-  questions: [],
-  error: null,
-  currentQuestionIndex: null,
-  userAnswers: {},
-  userScore: {},
+  status: 'loading',
 };
 
 export default function reducer(
   state: State = INITIAL_STATE,
   action: Action
 ): State {
-  const {type, payload} = action;
-
   switch (action.type) {
-    case LOAD_EXERCISE:
-      return {
-        ...state,
-        step: steps.LOADING,
-        error: null,
-      };
-
+    case LOAD_EXERCISE: {
+      return INITIAL_STATE;
+    }
     case LOAD_EXERCISE_SUCCESS: {
-      const {exercise: {metadata, questions}} = action.payload;
+      if (state.status !== 'loading') {
+        return state;
+      }
+      const {metadata, questions, maxScore} = action;
       return {
-        ...state,
-        step: steps.READY,
-        error: null,
+        status: 'ready',
         metadata,
         questions,
-      };
-    }
-    case LOAD_EXERCISE_FAILURE: {
-      const {error} = action.payload;
-      return {
-        ...state,
-        step: steps.FAILURE,
-        error,
-      };
-    }
-
-    case START_EXERCISE:
-      if (state.step !== steps.READY && state.step !== steps.FINISHED) {
-        return state;
-      }
-      return {
-        ...state,
-        step: steps.INPUT,
-        currentQuestionIndex: 0,
-        userAnswers: {},
-        userScore: {
+        score: {
           total: 0,
-          max: exerciseMaxScore(state),
+          max: maxScore,
         },
       };
+    }
 
-    case ANSWER_QUESTION: {
-      if (state.step !== steps.INPUT) {
+    case LOAD_EXERCISE_FAILURE: {
+      if (state.status !== 'loading') {
         return state;
       }
-      const {answer} = action.payload;
-      const {currentQuestionIndex} = state;
       return {
-        ...state,
-        userAnswers: {
-          ...state.userAnswers,
-          [Number(currentQuestionIndex)]: answer,
-        },
+        status: 'loadError',
+        error: action.errorCode,
       };
+    }
+
+    case START_EXERCISE: {
+      if (state.status === 'ready' || state.status === 'finished') {
+        return {
+          ...(state: any),
+          status: 'askQuestion',
+          question: state.questions.slice().sort(() => Math.random() >= 0.5 ? -1 : 1),
+          score: {
+            ...state.score,
+            total: 0,
+          },
+          currentQuestionIndex: 0,
+        };
+      } else {
+        return state;
+      }
+    }
+
+    case SUBMIT_ANSWER: {
+      return state;
     }
 
     case VALIDATE_ANSWER: {
@@ -135,7 +111,6 @@ export default function reducer(
         };
       }
     }
-
     default:
       return state;
   }
